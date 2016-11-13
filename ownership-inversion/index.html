@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<title>VBorza | Layered Architecture and Ownership Inversion</title>
+
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="https://vborza.github.io/favicons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="https://vborza.github.io/favicons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://vborza.github.io/favicons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="https://vborza.github.io/favicons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://vborza.github.io/favicons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://vborza.github.io/favicons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://vborza.github.io/favicons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://vborza.github.io/favicons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://vborza.github.io/favicons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://vborza.github.io/favicons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://vborza.github.io/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://vborza.github.io/favicons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://vborza.github.io/favicons/favicon-16x16.png">
+<link rel="manifest" href="https://vborza.github.io/favicons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="https://vborza.github.io/favicons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+	<!-- Web Fonts -->
+	<link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+	<!-- CSS Global Compulsory -->
+	<link rel="stylesheet" href="https://vborza.github.io/assets/plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/style.css">
+
+	<!-- CSS Header and Footer -->
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/headers/header-default.css">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/footers/footer-v1.css">
+
+	<!-- CSS Implementing Plugins -->
+	<link rel="stylesheet" href="https://vborza.github.io/assets/plugins/animate.css">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+	<!-- CSS Theme -->
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/theme-colors/dark-blue.css" id="style_color">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/theme-skins/dark.css">
+
+	<!-- CSS Customization -->
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/custom.css">
+    <link rel="stylesheet" href="https://vborza.github.io/assets/css/pages/page_clients.css">
+	<link rel="stylesheet" href="https://vborza.github.io/assets/css/pages/page_misc_sticky_footer.css">
+
+	<style type="text/css">
+ 		h1:hover {
+  			cursor:pointer;
+ 		}
+	</style>
+
+</head>
+
+<body> 
+	<div class="wrapper">
+		<!--=== Header ===-->
+		<div class="header">
+			<div class="container">
+				<!-- Logo -->
+				<a class="logo" href="https://vborza.github.io" style="text-decoration:none;">
+					<h1><b><span class="color-green">v</span>borza</b></h1>
+				</a>
+				<!-- End Logo -->
+
+				<!-- Toggle get grouped for better mobile display -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="fa fa-bars"></span>
+				</button>
+				<!-- End Toggle -->
+			</div><!--/end container-->
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li >
+          				   <a href="/">About</a>
+       					</li>
+
+							<li >
+          						<a href="/blog">Blog</a>
+       					    </li>
+					</ul>
+				</div><!--/end container-->
+			</div><!--/navbar-collapse-->
+		</div>
+		<!--=== End Header ===-->
+
+        <!--=== Breadcrumbs v1 ===-->
+<div class="breadcrumbs-v1">
+	<div class="container">
+		<span>Layered Architecture and Ownership Inversion</span>
+	</div>
+</div>
+
+<!--=== Blog Posts ===-->
+<div class="bg-color-light">
+	<div class="container content-sm" style="padding-top:30px;">
+		<div class="row">
+			<!-- Blog All Posts -->
+			<div class="col-md-9">
+				<!-- News v3 -->
+				<div class="news-v3 bg-color-white margin-bottom-30">
+					<div class="news-v3-in">
+						<ul class="list-unstyled list-inline blog-info">
+						<li><i class="fa fa-calendar"></i> 13 November 2016</li>
+						<li><i class="fa fa-tags"></i> 
+  
+    <a href="https://vborza.github.io/tags/csharp">C#</a>, 
+  
+    <a href="https://vborza.github.io/tags/architecture">Architecture</a>
+  
+</li>
+						</ul>
+						<hr style="margin:15px 0;">	
+					
+                        <p>Most of you know the Dependency Inversion Principle (DIP) and use abstractions when designing modular, flexible and maintainable systems. But do you have your abstractions defined in the correct layers?
+</p>
+<!--more-->
+<div class="headline"><h4>Dependency Inversion and Layered Architecture</h4></div>
+<p>A few weeks ago, I took part on an agile programming meetup, which was held by one of the senior developers of the company I am currently working for. 
+   I expected usual talk about extreme programming (pair programming, TDD, refactoring, etc.). But this meetup started quite differently. The speaker drew a typical modular scheme of enterprise application as below. </p>
+
+<img class="img-responsive center" src="https://vborza.github.io/img/posts/layers_usual.svg" alt=""></br>
+
+<p>As you can see, this is completely common example of structured object-oriented architecture. 
+	In this diagram, the high level <b>Web App</b> layer uses/references a lower-level <b>Business</b> layer, 
+	which in turn uses <b>DAL</b> and <b>Web services</b> layers. </p>
+
+<p>The developer turned to us and said, <em>"I expect that architecture of applications most of you is working on, looks like this. 
+	Do you think it's okay?'"</em> We started looking at each other aware of fact, that our apps looked exactly like that (except the different layers).
+	<em>"Well, I think this approach is wrong"</em>, declared he,
+	<em>"why do you let the business layer to be dependent on all the other layers, when the business is the core of your application? All the other layers could be replaced/modified in the future..."</em></br> 
+	I must admit, he was right.
+	After the meeting I dug in and read something about this topic. I wanted to know what are the benefits of this inversed approach and how should we implement it correctly.
+</p>
+<p>
+	I found the most relevant information in the book <a href="https://www.amazon.com/gp/product/0131857258/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=0131857258&linkCode=as2&tag=ploeh-20">Agile Principles, Patterns, and Practices in C#</a>,
+	where is a whole chapter dedicated to DIP and its implementation in modular architecture. The following statement explains it quite well.
+<blockquote class="hero">
+	<p><em>"The dependency structure of a well-designed object-oriented program is "inverted" with respect to the dependency structure that normally results from traditional procedural methods.
+It is the high-level modules that contain the important policy decisions and business models of an application. These
+modules contain the identity of the application. Yet when these modules depend on the lower-level
+modules, changes to the lower-level modules can have direct effects on the higher-level modules and
+can force them to change in turn. High-level modules simply should not depend on low-level modules in any way." </em></p>
+<small><em> Agile Principles, Patterns, and Practices in C#</br>(ch. 11)</em></small>
+</blockquote>	
+</p>
+
+<div class="headline"><h4>Ownership Inversion</h4></div>
+
+<p>I was sold. The question was, how we can invert the dependencies in our application. Luckily, the solution was quite simple.
+   Our problem was that the abstract interfaces used in the business layer (e.g. repository interface) were declared in the lower-level layers. This way we had to reference 
+   <b>DAL</b> and <b>Web Services</b> layer from our <b>Business</b> layer. To invert the references, we moved the affected abstract interfaces to the <b>Business</b> layer. This way,
+   the upper layers do not depend on the lower layers anymore. Instead, the lower layers depend on abstract interfaces declared in the Business layer.		
+</p>
+
+<img class="img-responsive center" src="https://vborza.github.io/img/posts/fixed_layering.png" alt=""></br>
+
+<p>As you can see, interfaces required by the Business layer are declared within it's package now and not in the libraries that implement them. 
+In the mentioned Agile Principles book, Robert C. Martin calls this phenomenon <b>Ownership Inversion</b>. 
+<blockquote class="hero">
+	<p><em>"We often
+think of utility libraries as owning their own interfaces. But <b>when DIP is applied, we find that the
+clients tend to own the abstract interfaces and that their servers derive from them.</b>" </em></p>
+<small><em> Agile Principles, Patterns, and Practices in C#</br>(ch. 11)</em></small>
+</blockquote>		
+</p>
+
+<div class="headline"><h4>Benefits of this approach</h4></div>
+<ul>
+	<li>Separation of concerns.</li>
+	<li>The business module is not affected by changes in lower-level modules (it don't even reference them). 
+		For example, you can switch the database implementation 
+		without redeploying the business library.</li>
+	<li>The business module can be tested in isolation, without references to low-level layers. </br>
+	<li>The high-level modules can be reused quite simply in different contexts.</li>
+</ul>
+                        
+						<!--<ul class="post-shares post-shares-lg">
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-speech"></i>
+									<span>28</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-share"></i>
+									<span>355</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-heart"></i>
+									<span>107</span>
+								</a>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<!-- End News v3 -->
+
+				<hr>
+
+				<!-- Blog Comments -->
+				
+					<h2 class="margin-bottom-20">Comments</h2>
+					<div id="disqus_thread"></div> 
+						
+<script>
+var disqus_config = function () {
+	this.page.url = "/ownership-inversion/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/ownership-inversion"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+	var d = document, s = d.createElement('script');
+	s.src = '//vborza.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>
+	Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+					
+				<hr>
+				<!-- End Blog Comments -->
+			</div>
+			<!-- Blog Sidebar -->
+			<div class="col-md-3">
+
+				<div class="headline-v2">
+					<h2>Latest Posts</h2>
+				</div>
+				<!-- Latest Links -->
+				
+	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
+        
+            <li>
+				<h3><a href="/ownership-inversion/">Layered Architecture and Ownership Inversion</a></h3>
+				<small>13 November 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="https://vborza.github.io/tags/csharp">C#</a>, 
+  
+    <a href="https://vborza.github.io/tags/architecture">Architecture</a>
+  
+</small>
+				<p>Most of you know the Dependency Inversion Principle (DIP) and...</p>
+			</li>
+        
+	</ul>
+				<!-- End Latest Links -->
+
+				<div class="headline-v2">
+					<h2>Browse</h2>
+				</div>
+				<a href="https://vborza.github.io/archive" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-history"></i> Archive</a>
+				<a href="https://vborza.github.io/blog" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-sort-amount-desc"></i> All posts</a>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			<!-- End Blog Sidebar -->
+		</div>
+	</div>
+	<!--/end container-->
+</div>
+<!--=== End Blog Posts ===-->
+
+		<!--=== Footer Version 1 ===-->
+		<div class="footer-v1 sticky-footer">
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								2016 &copy; All Rights Reserved.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div><!--/copyright-->
+		</div>
+		<!--=== End Footer Version 1 ===-->
+	</div><!--/End Wrapepr-->
+
+	<!-- JS Global Compulsory -->
+	<script type="text/javascript" src="https://vborza.github.io/assets/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="https://vborza.github.io/assets/plugins/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src="https://vborza.github.io/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!-- JS Implementing Plugins -->
+	<script type="text/javascript" src="https://vborza.github.io/assets/plugins/back-to-top.js"></script>
+	<script type="text/javascript" src="https://vborza.github.io/assets/plugins/smoothScroll.js"></script>
+	<script type="text/javascript" src="https://vborza.github.io/assets/plugins/jquery.parallax.js"></script>
+	<!-- JS Customization -->
+	<script type="text/javascript" src="https://vborza.github.io/assets/js/custom.js"></script>
+	<!-- JS Page Level -->
+	<script type="text/javascript" src="https://vborza.github.io/assets/js/app.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			App.init();
+			App.initParallaxBg();
+		});
+	</script>
+	<!--[if lt IE 9]>
+	<script src="assets/plugins/respond.js"></script>
+	<script src="assets/plugins/html5shiv.js"></script>
+	<script src="assets/plugins/placeholder-IE-fixes.js"></script>
+	<![endif]-->
+	
+</body>
+</html>
