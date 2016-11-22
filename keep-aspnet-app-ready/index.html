@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<title>VBorza | Keeping ASP.NET app ready</title>
+
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="http://vborza.com/favicons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="http://vborza.com/favicons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="http://vborza.com/favicons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="http://vborza.com/favicons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="http://vborza.com/favicons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="http://vborza.com/favicons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="http://vborza.com/favicons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="http://vborza.com/favicons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://vborza.com/favicons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://vborza.com/favicons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://vborza.com/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="http://vborza.com/favicons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="http://vborza.com/favicons/favicon-16x16.png">
+<link rel="manifest" href="http://vborza.com/favicons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="http://vborza.com/favicons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+	<!-- Web Fonts -->
+	<link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+	<!-- CSS Global Compulsory -->
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/style.css">
+
+	<!-- CSS Header and Footer -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/headers/header-default.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/footers/footer-v1.css">
+
+	<!-- CSS Implementing Plugins -->
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/animate.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+	<!-- CSS Theme -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/theme-colors/dark-blue.css" id="style_color">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/theme-skins/dark.css">
+
+	<!-- CSS Customization -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/custom.css">
+    <link rel="stylesheet" href="http://vborza.com/assets/css/pages/page_clients.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/pages/page_misc_sticky_footer.css">
+
+	<!-- Code snippet highlighting -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/syntax.css">
+
+	<style type="text/css">
+ 		h1:hover {
+  			cursor:pointer;
+ 		}
+	</style>
+
+</head>
+
+<body> 
+	<div class="wrapper">
+		<!--=== Header ===-->
+		<div class="header">
+			<div class="container">
+				<!-- Logo -->
+				<a class="logo" href="http://vborza.com" style="text-decoration:none;">
+					<h1><b><span class="color-green">v</span>borza</b></h1>
+				</a>
+				<!-- End Logo -->
+
+				<!-- Toggle get grouped for better mobile display -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="fa fa-bars"></span>
+				</button>
+				<!-- End Toggle -->
+			</div><!--/end container-->
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li >
+          				   <a href="/">About</a>
+       					</li>
+
+							<li >
+          						<a href="/blog">Blog</a>
+       					    </li>
+					</ul>
+				</div><!--/end container-->
+			</div><!--/navbar-collapse-->
+		</div>
+		<!--=== End Header ===-->
+
+        <!--=== Breadcrumbs v1 ===-->
+<div class="breadcrumbs-v1">
+	<div class="container">
+		<span>Keeping ASP.NET app ready</span>
+	</div>
+</div>
+
+<!--=== Blog Posts ===-->
+<div class="bg-color-light">
+	<div class="container content-sm" style="padding-top:30px;">
+		<div class="row">
+			<!-- Blog All Posts -->
+			<div class="col-md-9">
+				<!-- News v3 -->
+				<div class="news-v3 bg-color-white margin-bottom-30">
+					<div class="news-v3-in">
+						<ul class="list-unstyled list-inline blog-info">
+						<li><i class="fa fa-calendar"></i> 22 November 2016</li>
+						<li><i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/deployment">Deployment</a>
+  
+</li>
+						</ul>
+						<hr style="margin:15px 0;">	
+
+                        <p>
+Hosting an ASP.NET app in IIS has its benefits. However, the consequences of 
+<b>on-demand loading</b> and <b>app pool recycling</b> actions are sometimes undesirable. One of them is that after the app pool has been recycled,
+the application is not initialized until some user hits it. This becomes a problem when we call a longer method on startup, 
+as the user has to wait until the app is fully initialized and his request is handled.
+We will take a look how to deal with this issue in MVC app, but this solution can be applied to any app hosted in IIS. 
+</p>
+<!--more-->
+
+<div class="headline"><h4>On-demand loading</h4></div>
+<p>
+The ASP.NET applications are usually hosted in IIS, most of the time within own application pools. App pool is basically a separate windows worker process 
+called <em>w3wp.exe</em>, which is started only when needed. By default, the app pool in IIS has <b>Start mode</b> setup to <b>OnDemand</b>. 
+This way, the app pool starts when IIS receives first request for a particular application bound to that app pool.
+The app pool is running until it's terminated for some reason (Idle Time-out, IIS has been stopped etc.). 
+This enables IIS to host multiple applications in the same time, without keeping some of them (with lower workload) running all the time. 	
+</p>
+
+<div class="headline"><h4>Application pool recycling</h4></div>
+<p>
+App pool recycling means terminating the current worker process and starting the new one (IIS overlaps the recycle method, 
+thus the old process finish the handling of old requests and new process handles the new requests). 
+Process recycling can happen manually, on IIS configuration changes, on IIS server restart, 
+or when defined threshold on memory, on time or amount of processed requests is reached. 
+Generally, when IIS detects that some worker process is unhealthy (for example because of memory leaks) it recycles it, which prevents the app from crashing.
+<blockquote class="text-left bq-green">
+	<p>After app pool recycling, the startup methods from <code>global.asax.cs</code> and <code>startup.cs</code> <b>are NOT called</b> by default. </p>
+</blockquote>
+</p>
+
+<div class="headline"><h4>AppDomain restart</h4></div>
+<p>
+Beside the app pool recycling, there is another source of problem. While the worker process is still alive,
+for any application that runs within the process an <b>AppDomain restart</b> can occur (without app pool recycling). 
+Basically it means that the application starts over with the new configuration, but in the same worker process. 
+AppDomain restart occurs for reasons such as web deploy, changes to <em>web.config</em>, updating files in BIN folder etc.
+ <blockquote class="text-left bq-green">
+	<p>After AppDomain restart, the startup methods from <code>global.asax.cs</code> and <code>startup.cs</code> <b>are NOT called</b> by default. </p>
+</blockquote>
+</p>
+<div class="headline"><h4>Our sample scenario</h4></div>
+<p>
+Let's take a look on our sample MVC app and its requirements. We well call it MONIT and it displays some statistics from financial markets. 
+Because it processes huge amount of data, quite a big in-memory cache has to be constructed on application's startup.<br>
+MONIT's initialization takes a while (cca 10 seconds), because in the <code>global.asax.cs</code> we call <code>BuildInMemoryCache</code> method.
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">MvcApplication</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">HttpApplication</span> 
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">void</span> <span class="nf">Application_Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nf">BuildInMemoryCache</span><span class="p">();</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">static</span> <span class="k">void</span> <span class="nf">BuildInMemoryCache</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">//build the cache
+</span>    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+There is only a couple of financial analysts who use the app. They check the app's dashboard only a few times per day, 
+when they need to check performance of specific financial product. 
+For that reason, most of the time the MONIT's app is stopped, and when some user makes a
+request to the dashboard page, he need to wait until the app is initialized and the dashboard is displayed.
+Of course, the users are unhappy and they demand to fix it, so they can see the dashboard immediately any time they hit the application. 
+</p>
+
+<div class="headline"><h4>How it works now</h4></div>
+<p>
+Because of small amount of requests, the app pool bound to MONIT app is usually stopped. When IIS receives the 
+request for MONIT app, it starts its app pool (i.e. new worker process), then the worker loads the AppDomain - the app is initialized 
+(in case of MVC app, the appropriate methods from <code>global.asax.cs</code> and <code>startup.cs</code> are called) and the request is handled. <br>
+From that moment, the application is up and all the following requests are handled directly, without starting the worker process and AppDomain loading.
+<br>
+However, if there are no more requests for period longer than defined in <b>Idle Time-out</b>, 
+the app pool is terminated. It can happen also for different reasons such as IIS server restart. 
+The app pool starts again when new request for MONIT app is received.
+</p>
+
+<div class="headline"><h4>Keeping the app pool alive</h4></div>
+<p>
+Because starting the new worker process (app pool) takes time, we want the worker process to be alive just after IIS startup and 
+keep it alive all the time.
+We setup it in IIS with following 2 steps.
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>1. Enable automatic startup for app pool (enabled by default)</b></h5>
+Go to app pool, click on basic settings and ensure that <b>Start application pool immediately</b> is checked.
+<br><br><img class="img-responsive center" src="http://vborza.com/img/posts/start_app_pool_immediatelly.PNG" alt=""><br>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>2. Enable Always Running mode</b></h5>
+In app pool's advanced settings, change the <b>Start Mode</b> to <b>AlwaysRunning</b>
+<br><br><img class="img-responsive center" src="http://vborza.com/img/posts/app_pool_advanced_settings.PNG" alt=""><br>
+<hr>
+From now the application pool <b>will not be terminated</b> even if there are no requests for longer time. 
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+However, this does not solve the timeout caused by <code>BuildInMemoryCache</code> method in <code>global.asax.cs</code>,
+which is called on our application's startup, when the first request is received by the worker process. <br>
+Maybe you got an idea that after starting the IIS server, we will do
+the first request to the MONIT app ourselves, so the application will be initialized when the next request from some user comes in.
+The problem is that out app pool can be recycled any time (a new worker process will be created), or our AppDomain could be restarted. 
+Thus for the subsequent request, the MONIT app has to be initialized again. <br>
+</p>
+Luckily, there is a feature in IIS called <b>auto-start</b>, which helps us to keep our application ready either after <b>app pool recycling</b>
+or <b>AppDomain restart</b>.
+<p>
+<p>
+<blockquote class="hero">
+	<p><em> From IIS 8.0 and higher, there is also built in feature called
+   <b><a href="https://www.iis.net/learn/get-started/whats-new-in-iis-8/iis-80-application-initialization">Application Initialization</a></b>.
+   It address the warm-up problem directly, by proactively performing the initialization tasks. It can be even configured to return some static page, 
+   while the warm-up is running.<br> 
+   However, after some testing I found out, that it performs the initialization task after app pool reconciliation, but not after AppDomain
+   restart (shame on you Microsoft...). Because of that, I suggest <b>auto-start</b> feature in this post. 
+  </em>
+</blockquote>	
+</p>
+
+
+<div class="headline"><h4>Auto-start setup</h4></div>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>1. Enable automatic start-up for Windows Process Activation (WAS) and World Wide Web Publishing (W3SVC) services</b></h5>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>2. Implement code</b></h5>
+Move the <code>BuildInMemoryCache</code> functionality to separate class from <code>global.asax.cs</code>.
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">CacheBuilder</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="k">readonly</span> <span class="n">CacheBuilder</span> <span class="n">Instance</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">CacheBuilder</span><span class="p">();</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="kt">object</span> <span class="n">_lockObject</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">object</span><span class="p">();</span>
+    <span class="k">private</span> <span class="kt">bool</span> <span class="n">_initialized</span><span class="p">;</span>
+
+    <span class="k">private</span> <span class="nf">CacheBuilder</span><span class="p">()</span> <span class="p">{</span> <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">BuildInMemoryCache</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">lock</span> <span class="p">(</span><span class="n">_lockObject</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">_initialized</span><span class="p">)</span> <span class="k">return</span><span class="p">;</span>
+            <span class="n">_initialized</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+            <span class="c1">//build cache
+</span>        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+The <code>CacheBuilder</code> class is singleton, because we want to ensure that the cache will be built only once, 
+even if we will call it from two places. <br>
+First one is the <code>global.asax.cs</code> file. We keep it there for the environments where the auto-start feature won't be setup
+<br> (e.g. development machines).
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">public</span> <span class="k">class</span> <span class="nc">MvcApplication</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">HttpApplication</span>
+<span class="p">{</span>
+    <span class="k">protected</span> <span class="k">void</span> <span class="nf">Application_Start</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">CacheBuilder</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="nf">BuildInMemoryCache</span><span class="p">();</span>
+        <span class="p">...</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+
+Second place is a class which implements <code>IProcessHostPreloadClient</code>. This class will be called automatically by WAS
+after app pool recycling or AppDomain restart.
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">namespace</span> <span class="nn">Monit</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">ApplicationPreload</span> <span class="p">:</span> <span class="n">System</span><span class="p">.</span><span class="n">Web</span><span class="p">.</span><span class="n">Hosting</span><span class="p">.</span><span class="n">IProcessHostPreloadClient</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">Preload</span><span class="p">(</span><span class="kt">string</span><span class="p">[]</span> <span class="n">parameters</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">CacheBuilder</span><span class="p">.</span><span class="n">Instance</span><span class="p">.</span><span class="nf">BuildInMemoryCache</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>3. Enable service auto-start provider</b></h5>
+<p>
+We edit the global <code>applicationHost.config</code> file (<code>%WINDIR%\System32\inetsrv\config\applicationHost.config</code>) as follows.
+<blockquote class="hero">
+	<p><em> On 64bit OS, be sure that you use a 64bit editor for editing <code>applicationHost.config</code>, instead of some 32bit editor 
+  like Notepad++. Otherwise , you are actually opening/saving the <code>C:\Windows\SysWOW64\inetsrv\Config\applicationHost.config</code>
+  regardless of what the title bar or save path may suggest in your editor. This can lead to lot of confusion, believe me...
+  </em>
+</blockquote>	
+
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="c">&lt;!-- ... --&gt;</span>
+
+<span class="nt">&lt;sites&gt;</span>
+    <span class="nt">&lt;site</span> <span class="na">name=</span><span class="s">"MonitSite"</span> <span class="na">id=</span><span class="s">"1"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;application</span> <span class="na">path=</span><span class="s">"/"</span> <span class="na">serviceAutoStartEnabled=</span><span class="s">"true"</span>
+                              <span class="na">serviceAutoStartProvider=</span><span class="s">"ApplicationPreload"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/site&gt;</span>
+<span class="nt">&lt;/sites&gt;</span>
+
+<span class="c">&lt;!-- Add this just after closing 'webLimits' tag --&gt;</span>
+<span class="nt">&lt;serviceAutoStartProviders&gt;</span>
+    <span class="nt">&lt;add</span> <span class="na">name=</span><span class="s">"ApplicationPreload"</span> <span class="na">type=</span><span class="s">"Monit.ApplicationPreload, Monit"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/serviceAutoStartProviders&gt;</span></code></pre></figure>
+</p>
+
+<hr class="devider devider-db-dashed" style="margin:10px 0 20px 0;">
+<div class="headline"><h4>Verify that warm-up is working</h4></div>
+<p>
+The best method to verify if our warm-up method works is by adding some logs to the <code>Preload(string[] parameters)</code> method.
+After we recycle the application pool (e.g. by restarting the IIS server or recycling the app pool manually), 
+or restart the AppDomain by editing the <em>web.config</em> file, the <code>Preload</code> method should be called,
+without making any requests to the hosted application.
+</p>
+<p>
+With this setup, almost every time when some user makes a request to our MONIT application, 
+its in-memory cache is already built so he/she don't have to wait until it's constructed, 
+even if it was the first request after app pool recycling or AppDomain restart.
+I said almost every time, because the user can hit the page just in time, when the app pool was recycled and the preload method is running.
+But that's quite unlikely scenario, especially for low-traffic applications like this one.
+</p>
+
+						<!--<ul class="post-shares post-shares-lg">
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-speech"></i>
+									<span>28</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-share"></i>
+									<span>355</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-heart"></i>
+									<span>107</span>
+								</a>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<!-- End News v3 -->
+				<div class="blog-author margin-bottom-30">
+					<a href="http://vborza.com"><img src="http://vborza.com/img/cv_photo_square.jpg" alt=""></a>
+							<div class="blog-author-desc">
+								<div class="overflow-h">
+									<h4>Viktor Borza</h4>
+									<ul class="list-inline">
+										<li><a href="https://cz.linkedin.com/in/vborza"><i class="fa fa-linkedin"></i></a></li>
+										<li><a href="https://twitter.com/vicBorza"><i class="fa fa-twitter"></i></a></li>
+										<li><a href="https://www.facebook.com/viktor.borza"><i class="fa fa-facebook"></i></a></li>
+									</ul>
+								</div>
+								<p>Freelance .NET developer with passion for software architecture and cutting-edge trends in programming.</p>
+						</div>
+					</div>
+				<hr>
+
+				<!-- Blog Comments -->
+				
+					<h2 class="margin-bottom-20">Comments</h2>
+					<div id="disqus_thread"></div> 
+						
+<script>
+var disqus_config = function () {
+	this.page.url = "http://vborza.com/keep-aspnet-app-ready/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/keep-aspnet-app-ready"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+	var d = document, s = d.createElement('script');
+	s.src = '//vborza.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>
+	Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+					
+				<hr>
+				<!-- End Blog Comments -->
+			</div>
+			<!-- Blog Sidebar -->
+			<div class="col-md-3">
+
+				<div class="headline-v2">
+					<h2>Latest Posts</h2>
+				</div>
+				<!-- Latest Links -->
+				
+	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
+        
+            <li>
+				<h3><a href="/keep-aspnet-app-ready/">Keeping ASP.NET app ready</a></h3>
+				<small>22 November 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/deployment">Deployment</a>
+  
+</small>
+				<p>Hosting an ASP.NET app in IIS has its benefits. However,...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/ownership-inversion/">Layered Architecture and Ownership Inversion</a></h3>
+				<small>13 November 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/architecture">Architecture</a>
+  
+</small>
+				<p>Most of you know the Dependency Inversion Principle (DIP) and...</p>
+			</li>
+        
+	</ul>
+				<!-- End Latest Links -->
+
+				<div class="headline-v2">
+					<h2>Browse</h2>
+				</div>
+				<a href="http://vborza.com/archive" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-history"></i> Archive</a>
+				<a href="http://vborza.com/blog" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-sort-amount-desc"></i> All posts</a>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			<!-- End Blog Sidebar -->
+		</div>
+	</div>
+	<!--/end container-->
+</div>
+<!--=== End Blog Posts ===-->
+
+		<!--=== Footer Version 1 ===-->
+		<div class="footer-v1 sticky-footer">
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								2016 &copy; All Rights Reserved.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div><!--/copyright-->
+		</div>
+		<!--=== End Footer Version 1 ===-->
+	</div><!--/End Wrapepr-->
+
+	<!-- JS Global Compulsory -->
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!-- JS Implementing Plugins -->
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/back-to-top.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/smoothScroll.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/jquery.parallax.js"></script>
+	<!-- JS Customization -->
+	<script type="text/javascript" src="http://vborza.com/assets/js/custom.js"></script>
+	<!-- JS Page Level -->
+	<script type="text/javascript" src="http://vborza.com/assets/js/app.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			App.init();
+			App.initParallaxBg();
+		});
+	</script>
+	<!--[if lt IE 9]>
+	<script src="assets/plugins/respond.js"></script>
+	<script src="assets/plugins/html5shiv.js"></script>
+	<script src="assets/plugins/placeholder-IE-fixes.js"></script>
+	<![endif]-->
+	
+</body>
+</html>

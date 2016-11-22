@@ -107,7 +107,7 @@
 
 <div class="breadcrumbs-v1">
 	<div class="container">
-		<span>Posts tagged with "Architecture"</span>
+		<span>Posts tagged with "Deployment"</span>
 	</div>
 </div>
 
@@ -119,24 +119,29 @@
 				
 			<div class="row blog blog-medium margin-bottom-10">
 				<div class="col-md-12">
-					<h2><a href="/ownership-inversion/">Layered Architecture and Ownership Inversion</a></h2>
+					<h2><a href="/keep-aspnet-app-ready/">Keeping ASP.NET app ready</a></h2>
 					<ul class="list-unstyled list-inline blog-info">
-						<li><i class="fa fa-calendar"></i> 13 November 2016</li>
+						<li><i class="fa fa-calendar"></i> 22 November 2016</li>
 						<!--<li><i class="fa fa-comments"></i> <a href="#">24 Comments</a></li>-->
 						<li><i class="fa fa-tags"></i> 
   
     <a href="http://vborza.com/tags/csharp">C#</a>, 
   
-    <a href="http://vborza.com/tags/architecture">Architecture</a>
+    <a href="http://vborza.com/tags/deployment">Deployment</a>
   
 </li>
 					</ul>
-					<p><p>Most of you know the Dependency Inversion Principle (DIP) and use abstractions when designing modular, flexible and maintainable systems. But do you have your abstractions defined in the correct layers?
+					<p><p>
+Hosting an ASP.NET app in IIS has its benefits. However, the consequences of 
+<b>on-demand loading</b> and <b>app pool recycling</b> actions are sometimes undesirable. One of them is that after the app pool has been recycled,
+the application is not initialized until some user hits it. This becomes a problem when we call a longer method on startup, 
+as the user has to wait until the app is fully initialized and his request is handled.
+We will take a look how to deal with this issue in MVC app, but this solution can be applied to any app hosted in IIS. 
 </p>
 
 
 </p>
-					<p><a class="btn-u btn-brd btn-brd-hover btn-u-sm" href="/ownership-inversion/">Read More <i class="fa fa-angle-double-right margin-left-5"></i></a></p>
+					<p><a class="btn-u btn-brd btn-brd-hover btn-u-sm" href="/keep-aspnet-app-ready/">Read More <i class="fa fa-angle-double-right margin-left-5"></i></a></p>
 				</div>
 			</div>
 			<!--End Blog Post-->
@@ -173,7 +178,7 @@
   
   
   <li>
-    <a href="http://vborza.com/tags/architecture"  class="blog-tags-active" ><i class="fa fa-tags"></i> Architecture [1]</a>
+    <a href="http://vborza.com/tags/architecture" ><i class="fa fa-tags"></i> Architecture [1]</a>
   </li>
   
   
@@ -183,7 +188,7 @@
   
   
   <li>
-    <a href="http://vborza.com/tags/deployment" ><i class="fa fa-tags"></i> Deployment [1]</a>
+    <a href="http://vborza.com/tags/deployment"  class="blog-tags-active" ><i class="fa fa-tags"></i> Deployment [1]</a>
   </li>
   
 				</ul>
