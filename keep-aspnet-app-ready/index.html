@@ -242,7 +242,7 @@ or <b>AppDomain restart</b>.
    <b><a href="https://www.iis.net/learn/get-started/whats-new-in-iis-8/iis-80-application-initialization">Application Initialization</a></b>.
    It address the warm-up problem directly, by proactively performing the initialization tasks. It can be even configured to return some static page, 
    while the warm-up is running.<br> 
-   However, after some testing I found out, that it performs the initialization task after app pool reconciliation, but not after AppDomain
+   However, after some testing I found out, that it performs the initialization task after app pool recycling, but not after AppDomain
    restart (shame on you Microsoft...). Because of that, I suggest <b>auto-start</b> feature in this post. 
   </em>
 </blockquote>	
