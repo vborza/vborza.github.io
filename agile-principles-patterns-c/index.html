@@ -3,7 +3,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-	<title>VBorza | Layered Architecture and Ownership Inversion</title>
+	<title>VBorza | (Book Review) Agile Principles, Patterns and Practices in C#</title>
 
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -106,7 +106,7 @@
         <!--=== Breadcrumbs v1 ===-->
 <div class="breadcrumbs-v1">
 	<div class="container">
-		<span>Layered Architecture and Ownership Inversion</span>
+		<span>(Book Review) Agile Principles, Patterns and Practices in C#</span>
 	</div>
 </div>
 
@@ -120,10 +120,12 @@
 				<div class="news-v3 bg-color-white margin-bottom-30">
 					<div class="news-v3-in">
 						<ul class="list-unstyled list-inline blog-info">
-						<li><i class="fa fa-calendar"></i> 13 November 2016</li>
+						<li><i class="fa fa-calendar"></i> 6 December 2016</li>
 						<li><i class="fa fa-tags"></i> 
   
-    <a href="http://vborza.com/tags/csharp">C#</a>, 
+    <a href="http://vborza.com/tags/bookReview">Book Reviews</a>, 
+  
+    <a href="http://vborza.com/tags/agile">Agile</a>, 
   
     <a href="http://vborza.com/tags/architecture">Architecture</a>
   
@@ -131,68 +133,74 @@
 						</ul>
 						<hr style="margin:15px 0;">	
 
-                        <p>Most of you know the Dependency Inversion Principle (DIP) and use abstractions when designing modular, flexible and maintainable systems. But do you have your abstractions defined in the correct layers?
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+<p>
+One of the best books I've read about agile methodologies and agile design, or better said, about the software design in general. In the first section,
+Robert C. Martin provides a brief overview of the best practices which should be applied in agile teams including planning, iterations, releases etc. 
+However, as a software developer, I was much more interested in the second section of the book - agile design. What I found was an exceptional explanation of object-oriented
+design principles.<br>
 </p>
 <!--more-->
-<div class="headline"><h4>Dependency Inversion and Layered Architecture</h4></div>
-<p>A few weeks ago, I took part on an agile programming meetup, which was held by one of the senior developers of the company I am currently working for. 
-   I expected usual talk about extreme programming (pair programming, TDD, refactoring, etc.). But this meetup started quite differently. The speaker drew a typical modular scheme of enterprise application as below. </p>
 
-<img class="img-responsive center" src="http://vborza.com/img/posts/layers_usual.svg" alt=""></br>
-
-<p>As you can see, this is completely common example of structured object-oriented architecture. 
-	In this diagram, the high level <b>Web App</b> layer uses/references a lower-level <b>Business</b> layer, 
-	which in turn uses <b>DAL</b> and <b>Web services</b> layers. </p>
-
-<p>The developer turned to us and said, <em>"I expect that architecture of applications most of you is working on, looks like this. 
-	Do you think it's okay?'"</em> We started looking at each other aware of fact, that our apps looked exactly like that (except the different layers).
-	<em>"Well, I think this approach is wrong"</em>, declared he,
-	<em>"why do you let the business layer to be dependent on all the other layers, when the business is the core of your application? All the other layers could be replaced/modified in the future..."</em></br> 
-	I must admit, he was right.
-	After the meeting I dug in and read something about this topic. I wanted to know what are the benefits of this inversed approach and how should we implement it correctly.
-</p>
+<div class="headline"><h4>Agile Development</h4></div>
 <p>
-	I found the most relevant information in the book <a href="https://www.amazon.com/gp/product/0131857258/ref=as_li_ss_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=0131857258&linkCode=as2&tag=ploeh-20">Agile Principles, Patterns, and Practices in C#</a>,
-	where is a whole chapter dedicated to DIP and its implementation in modular architecture. The following statement explains it quite well.
+The agile development section has around 100 pages, which is not so much according to the size of the book, which is over 900 pages.
+It briefly covers all the important aspects of agile development as agile manifest, teams organization, overview of extreme programming, planning, test-driven development and 
+refactoring, underscoring the importance of all of them. 
+As I work in an agile team right now, I already know most of these things and I skipped some of the chapters.
+However, I highlighted some statements including the following ones, which are often ignored.
+
+<h5>Test-Driven Development</h5>
 <blockquote class="hero">
-	<p><em>"The dependency structure of a well-designed object-oriented program is "inverted" with respect to the dependency structure that normally results from traditional procedural methods.
-It is the high-level modules that contain the important policy decisions and business models of an application. These
-modules contain the identity of the application. Yet when these modules depend on the lower-level
-modules, changes to the lower-level modules can have direct effects on the higher-level modules and
-can force them to change in turn. High-level modules simply should not depend on low-level modules in any way." </em></p>
-<small><em> Agile Principles, Patterns, and Practices in C#</br>(ch. 11)</em></small>
+	<p><em>"All production code is written in order to make a failing unit test pass. First, we write a unit test that
+fails because the functionality it is testing for doesn't exist. Then we write the code that makes that
+test pass." </em> <small><em> Agile Principles, Patterns, and Practices in C# (ch. 2)</em></small></p>
+</blockquote>	
+
+<h5>Continuous Integration</h5>
+<blockquote class="hero">
+	<p><em>"The programmers check their code in and integrate several times per day. The rule is simple. The
+first one to check in wins; everybody else merges." <small><em> Agile Principles, Patterns, and Practices in C# (ch. 2)</em></small> </em></p>
 </blockquote>	
 </p>
 
-<div class="headline"><h4>Ownership Inversion</h4></div>
-
-<p>I was sold. The question was, how we can invert the dependencies in our application. Luckily, the solution was quite simple.
-   Our problem was that the abstract interfaces used in the business layer (e.g. repository interface) were declared in the lower-level layers. This way we had to reference 
-   <b>DAL</b> and <b>Web Services</b> layer from our <b>Business</b> layer. To invert the references, we moved the affected abstract interfaces to the <b>Business</b> layer. This way,
-   the upper layers do not depend on the lower layers anymore. Instead, the lower layers depend on abstract interfaces declared in the Business layer.		
+<div class="headline"><h4>Agile Design</h4></div>
+<p>
+Agile design section provides overview of design smells, SOLID principles, UML diagrams and various design patterns with the appropriate 
+code samples. The principles are then applied to payroll system development use case, which provides a very useful overview of design evolution 
+from the first requirements to the final 
+version of the product. As making improvements to the design, there is lot of design patterns applied which show how to keep the application's architecture 
+simple, easy to change, 
+reusable and properly modularized.<br> 
+I really liked the chapter about packaging the application, as there is not so much literature related to this topic. You can learn how to apply
+the Release-Reuse, Common Closure, Stable Abstraction and other principles to modularize your application properly.  
+</p>
+<p>
+This book has 'C#' int its title, but to be honest, the code samples look more like a pseudo-code to me. There is a lot of cases,
+where an experienced C# developer would use more elegant features of C# language like generics, extensions, event handlers etc. instead of the code
+provided in the book. 
+Also, there is sometimes too much boring code to read, which I suppose most of the advanced programmers will just skip.
+However, it does not change the fact that in the most cases, the author explains the object-oriented programming principles in an outstanding manner.
 </p>
 
-<img class="img-responsive center" src="http://vborza.com/img/posts/fixed_layering.png" alt=""></br>
-
-<p>As you can see, interfaces required by the Business layer are declared within it's package now and not in the libraries that implement them. 
-In the mentioned Agile Principles book, Robert C. Martin calls this phenomenon <b>Ownership Inversion</b>. 
+<p>
+There are is a passage which I liked most regarding the way how agile software should be designed.
 <blockquote class="hero">
-	<p><em>"We often
-think of utility libraries as owning their own interfaces. But <b>when DIP is applied, we find that the
-clients tend to own the abstract interfaces and that their servers derive from them.</b>" </em></p>
-<small><em> Agile Principles, Patterns, and Practices in C#</br>(ch. 11)</em></small>
-</blockquote>		
+	<p><em>"Fool me once, shame on you. Fool me twice, shame on me." <br>
+    To keep from loading our software with needless complexity, we may permit ourselves to be
+fooled <b>once</b>. This means that we initially write our code expecting it not to change. <b>When a change
+occurs, we implement the abstractions that protect us from future changes of that kind</b>. In short, we
+take the first bullet and then make sure that we are protected from any more bullets coming from
+that particular gun.<small><em> Agile Principles, Patterns, and Practices in C# (ch. 9)</em></small> </em></p>
+</blockquote>	
 </p>
 
-<div class="headline"><h4>Benefits of this approach</h4></div>
-<ul>
-	<li>Separation of concerns.</li>
-	<li>The business module is not affected by changes in lower-level modules (it don't even reference them). 
-		For example, you can switch the database implementation 
-		without redeploying the business library.</li>
-	<li>The business module can be tested in isolation, without references to low-level layers. </br>
-	<li>The high-level modules can be reused quite simply in different contexts.</li>
-</ul>
+<p>
+The software design section of this book provides a lot of handy information about object-oriented principles, patterns and their applications
+in software development. I believe that all the developers, from intermediate to advanced, 
+who care about good software architecture and deal with important design decisions,
+will benefit from reading this book and will use it as reference in the future.  
+</p>
 
 						<!--<ul class="post-shares post-shares-lg">
 							<li>
@@ -240,8 +248,8 @@ clients tend to own the abstract interfaces and that their servers derive from t
 						
 <script>
 var disqus_config = function () {
-	this.page.url = "http://vborza.com/ownership-inversion/";  // Replace PAGE_URL with your page's canonical URL variable
-	this.page.identifier = "/ownership-inversion"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+	this.page.url = "http://vborza.com/agile-principles-patterns-c/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/agile-princinples-pattrens-csharp"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
 };
 
 (function() { // DON'T EDIT BELOW THIS LINE
