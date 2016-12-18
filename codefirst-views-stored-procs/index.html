@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<title>VBorza | EF Code First - Using Views and Stored Procedures</title>
+
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="http://vborza.com/favicons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="http://vborza.com/favicons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="http://vborza.com/favicons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="http://vborza.com/favicons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="http://vborza.com/favicons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="http://vborza.com/favicons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="http://vborza.com/favicons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="http://vborza.com/favicons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="http://vborza.com/favicons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="http://vborza.com/favicons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://vborza.com/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="http://vborza.com/favicons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="http://vborza.com/favicons/favicon-16x16.png">
+<link rel="manifest" href="http://vborza.com/favicons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="http://vborza.com/favicons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+	<!-- Web Fonts -->
+	<link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+	<!-- CSS Global Compulsory -->
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/style.css">
+
+	<!-- CSS Header and Footer -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/headers/header-default.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/footers/footer-v1.css">
+
+	<!-- CSS Implementing Plugins -->
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/animate.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+	<!-- CSS Theme -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/theme-colors/dark-blue.css" id="style_color">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/theme-skins/dark.css">
+
+	<!-- CSS Customization -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/custom.css">
+    <link rel="stylesheet" href="http://vborza.com/assets/css/pages/page_clients.css">
+	<link rel="stylesheet" href="http://vborza.com/assets/css/pages/page_misc_sticky_footer.css">
+
+	<!-- Code snippet highlighting -->
+	<link rel="stylesheet" href="http://vborza.com/assets/css/syntax.css">
+
+	<style type="text/css">
+ 		h1:hover {
+  			cursor:pointer;
+ 		}
+	</style>
+
+</head>
+
+<body> 
+	<div class="wrapper">
+		<!--=== Header ===-->
+		<div class="header">
+			<div class="container">
+				<!-- Logo -->
+				<a class="logo" href="http://vborza.com" style="text-decoration:none;">
+					<h1><b><span class="color-green">v</span>borza</b></h1>
+				</a>
+				<!-- End Logo -->
+
+				<!-- Toggle get grouped for better mobile display -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="fa fa-bars"></span>
+				</button>
+				<!-- End Toggle -->
+			</div><!--/end container-->
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li >
+          				   <a href="/">About</a>
+       					</li>
+
+							<li >
+          						<a href="/blog">Blog</a>
+       					    </li>
+					</ul>
+				</div><!--/end container-->
+			</div><!--/navbar-collapse-->
+		</div>
+		<!--=== End Header ===-->
+
+        <!--=== Breadcrumbs v1 ===-->
+<div class="breadcrumbs-v1">
+	<div class="container">
+		<span>EF Code First - Using Views and Stored Procedures</span>
+	</div>
+</div>
+
+<!--=== Blog Posts ===-->
+<div class="bg-color-light">
+	<div class="container content-sm" style="padding-top:30px;">
+		<div class="row">
+			<!-- Blog All Posts -->
+			<div class="col-md-9">
+				<!-- News v3 -->
+				<div class="news-v3 bg-color-white margin-bottom-30">
+					<div class="news-v3-in">
+						<ul class="list-unstyled list-inline blog-info">
+						<li><i class="fa fa-calendar"></i> 18 December 2016</li>
+						<li><i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/ef">Entity Framework</a>
+  
+</li>
+						</ul>
+						<hr style="margin:15px 0;">	
+
+                        <p>
+Programming an application with <em>Entity Framework</em> and <em>Code First</em> does not mean you won't write any raw SQL anymore.
+C# code is great for the basic CRUD operations, but as the application grows, there are cases when you need to write complex queries containing various
+joins (on multiple columns) and aggregate functions, or you need to do some huge
+bulk updates. These are the situations, when you don't want to rely on SQL generated from LINQ and you 
+rather create a view or a stored procedure, using all the power of SQL Server to improve its performance.
+</p>
+<!--more-->
+
+<img class="img-responsive center" style="margin: auto;" src="http://vborza.com/img/posts/power_raw_sql.jpg" alt=""></br>
+
+<p>
+Let's suppose that you were given an assignment to develop a simple application, which should basically work only with couple of entities and 
+performing some CRUD operations.<br>
+You have decided to go with <em>Entity Framework</em> and <em>Code First</em> approach, as it's easy to use and speeds the development up. 
+Everything runs smoothly and you get by with only writing LINQ queries and using basic Entity Framework's functions. But as the application 
+and its database grows, there come new requirements for dashboards displaying various statistics on the top of your data. 
+<br>
+You start working on LINQ query for the first dashboard, which requires joins on more than 5 tables, subqueries and various aggregate functions. 
+As you write the 20th line of code of your LINQ query, struggling to make it work, you realize that it may be cleaner and more efficient to write a 
+database view or a stored procedure. This way you could use temp tables and another features 
+of your database server (cached execution plans), to improve the responsiveness of your dashboards.</p>
+<p>
+We will take a look how to handle this situation in the way, that it will play nicely with <em>Entity Framework</em> 
+and <em>Code First</em> approach.
+</p>
+<!--more-->
+
+<div class="headline"><h4>Dealing with a Database View</h4></div>
+<p>
+Using a database view is handy when you need to reuse its rows in multiple queries. You can map a database view to an entity in your database context,
+so you can treat it as a regular table in your LINQ queries.
+</p>
+<p>
+Steps to handle a view:
+<ol>
+    <li>
+        Create a <code>SomeEntityVw</code> class with properties mapped to view columns. You can use EF features like virtual properties and <code>ForeignKey</code> 
+        annotations to be able to load entities related to the view in your queries.
+    </li>
+    <li>
+        Add the created entity as a new property <code>DbSet&ltSomeEntityVw&gt SomeEntitiesVw</code> to your database context.
+    </li>
+    <li>
+        Add new migration using <em>Package Manager Console</em> and <code>add migration</code> command.
+    </li>
+    <li>
+        As you can notice, the generated migration contains statements for creating a new table for the <code>NewEntityVw</code> 
+        in the <code>Up()</code> method. 
+        Delete this code and replace it with <code>Sql(@"CREATE VIEW dbo.vwSomeEntities AS...")</code> statement. <br>
+        You should also replace the code in the <code>Down()</code> method to be able to revert the migrations properly. Its code should contain call to 
+        <code>Sql(@"DROP VIEW dbo.vwSomeEntities;")</code>.
+    </li>
+    <li>
+        Update the database.
+    </li>
+</ol>
+Now you can use the new entity in your LINQ statements as it were a regular table (e.g. <code>dbContext.SomeEntitiesVw.Where(x =>..)</code>).
+</p>
+<p>
+<blockquote class="hero">
+    <p><em>Of course, when you try to update some properties in the entity mapped to a view, a call to <code>saveChanges()</code> 
+    will fail, unless you create a writable view, which is quite rare. For that reason you should give the entities which are mapped to views some specific names,  
+    to make clear that they should not be updated (e.g. their names should end with 'Vw').</em> 
+</blockquote>	
+</p>
+
+<div class="headline"><h4>Using a Stored Procedure</h4></div>
+<p>
+In some cases, a stored procedure is more suitable than a database view. Imagine a scenario when you have to show some complex statistics for a 
+concrete user. Using a sql view, you would have the rows with statistics for all the users generated. Then you will have to call 
+<code>Where(x => x.UserId = id)</code> statement in the code to get the row for the related user. As there would be many joins and group by clauses 
+in the all users statistics view, it will take much more time as creating the statistics for just one user.<br>
+Probably more efficient would be a parametrized stored procedure with <code>@userid</code> parameter. This way, you could filter the rows directly 
+when joining the tables using clauses like <code>join on t1.userid = @userId</code>. This way only the rows for the given user will be processed by SQL Server.</p>
+<p>
+Another common scenario where stored procedures beat ORM frameworks are bulk updates and deletes. In Entity Framework we need to 
+load the objects to the memory first, then we update or delete them and call <code>dbContext.SaveChanges()</code> to promote the changes to database. 
+This is very inefficient when you deal with thousands of rows and stored procedures handle these use cases much better.</p>
+<p>
+How to create a stored procedure?
+<ol>
+    <li>
+        Add a new (empty) migration to your project.
+    </li>
+    <li>
+        Add code to the <code>Up()</code> method as <code>Sql(@"CREATE PROCEDURE dbo.spUserstatistics @userId int ...")</code><br>
+        Implement the <code>Down()</code> method's body with <code>Sql(@"DROP PROCEDURE dbo.spUserstatistics;")</code>
+    </li>
+    <li>
+        Update the database
+    </li>
+</ol>
+</p>
+<p>
+How to call the stored procedure?
+
+<ol>
+    <li>
+        If your stored procedure returns a result set, create a class that match the columns of the returned table, e.g. <code>SpResult</code>.<br>
+        Then call the stored procedure as 
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">context</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DbContext</span><span class="p">())</span> 
+<span class="p">{</span> 
+     <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">Database</span><span class="p">.</span><span class="n">SqlQuery</span><span class="p">&lt;</span><span class="n">SpResult</span><span class="p">&gt;(</span><span class="s">"dbo.spUserstatistics @userId"</span><span class="p">,</span> 
+                     <span class="k">new</span> <span class="nf">SqlParameter</span><span class="p">(</span><span class="s">"@userId"</span><span class="p">,</span> <span class="n">id</span><span class="p">)).</span><span class="nf">FirstOrDefault</span><span class="p">();</span> <span class="c1">//or .ToList() 
+</span><span class="p">}</span> </code></pre></figure>
+    </li>
+    <li>
+        If your stored procedure does not return a result set, only some value like success code, number of updated rows, etc. 
+        (it has a <code>RETURN</code> statement instead of <code>SELECT</code>), then you can call it as follows
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">context</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">DbContext</span><span class="p">())</span> 
+<span class="p">{</span> 
+    <span class="kt">var</span> <span class="n">returnCode</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">SqlParameter</span><span class="p">(</span><span class="s">"@returnCode"</span><span class="p">,</span> <span class="n">SqlDbType</span><span class="p">.</span><span class="n">Int</span><span class="p">);</span>
+    <span class="n">returnCode</span><span class="p">.</span><span class="n">Direction</span> <span class="p">=</span> <span class="n">ParameterDirection</span><span class="p">.</span><span class="n">Output</span><span class="p">;</span>
+
+    <span class="n">context</span><span class="p">.</span><span class="n">Database</span><span class="p">.</span><span class="n">SqlQuery</span><span class="p">&lt;</span><span class="kt">object</span><span class="p">&gt;(</span><span class="s">"exec @returnCode = dbo.spBulkUpdateUserRecords @userId"</span><span class="p">,</span> 
+                                <span class="n">returnCode</span><span class="p">,</span> <span class="k">new</span> <span class="nf">SqlParameter</span><span class="p">(</span><span class="s">"@userId"</span><span class="p">,</span> <span class="n">id</span><span class="p">)).</span><span class="nf">FirstOrDefault</span><span class="p">();</span> 
+    <span class="kt">var</span> <span class="n">returnCodeValue</span> <span class="p">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">returnCode</span><span class="p">.</span><span class="n">Value</span><span class="p">;</span>
+<span class="p">}</span> </code></pre></figure>
+    </li>
+</ol>
+</p>
+
+<div class="headline"><h4>Deployment</h4></div>
+<p>
+Using the migrations, your database views and stored procedures are deployed to the SQL Server the same way as the migrations for the tables,
+which were generated automatically from your code. This way, you don't need to use any additional mechanism for deploying your SQL scripts. More importantly,
+with properly written migrations (<code>Down()</code> methods implemented correctly), 
+you can still use features of code-first migrations like reverting the database schema to a specific state, 
+which is a huge benefit.
+</p>
+<div class="headline"><h4>Unit Testing</h4></div>
+<p>
+There is one important thing we <b>loose</b> when we use raw SQL instead of LINQ - <b>full type and error checking at compile-time</b>. When you have a stored procedure or a view
+defined on database level, your code will compile without errors even if you delete/modify the tables which the stored procedure or view operates on. For that
+reason it is very important to have unit tests also on database level, permanently checking that your views and stored procedures works as expected.
+If some of your tests starts failing and you detect that some stored procedure or view has to be updated, create a migration with proper <code>Sql("ALTER...")</code> statement 
+before deploying the application.
+</p>
+<p>
+<blockquote class="hero">
+    <p><em>If you are interested how to easily setup data access tests on a testing database with the same context and schema as your app has,
+        check my post <a href="http://vborza.com//ef-database-testing/">Entity Framework & Database Testing </a> for more details</em>. 
+</blockquote>	
+</p>
+
+
+
+						<!--<ul class="post-shares post-shares-lg">
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-speech"></i>
+									<span>28</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-share"></i>
+									<span>355</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-heart"></i>
+									<span>107</span>
+								</a>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<!-- End News v3 -->
+				<div class="blog-author margin-bottom-30">
+					<a href="http://vborza.com"><img src="http://vborza.com/img/cv_photo_square.jpg" alt=""></a>
+							<div class="blog-author-desc">
+								<div class="overflow-h">
+									<h4>Viktor Borza</h4>
+									<ul class="list-inline">
+										<li><a href="https://cz.linkedin.com/in/vborza"><i class="fa fa-linkedin"></i></a></li>
+										<li><a href="https://twitter.com/vicBorza"><i class="fa fa-twitter"></i></a></li>
+										<li><a href="https://www.facebook.com/viktor.borza"><i class="fa fa-facebook"></i></a></li>
+									</ul>
+								</div>
+								<p>Freelance .NET developer with passion for software architecture and cutting-edge trends in programming.</p>
+						</div>
+					</div>
+				<hr>
+
+				<!-- Blog Comments -->
+				
+					<h2 class="margin-bottom-20">Comments</h2>
+					<div id="disqus_thread"></div> 
+						
+<script>
+var disqus_config = function () {
+	this.page.url = "http://vborza.com/codefirst-views-stored-procs/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/codefirst-views-stored-procs"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+	var d = document, s = d.createElement('script');
+	s.src = '//vborza.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>
+	Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+					
+				<hr>
+				<!-- End Blog Comments -->
+			</div>
+			<!-- Blog Sidebar -->
+			<div class="col-md-3">
+
+				<div class="headline-v2">
+					<h2>Latest Posts</h2>
+				</div>
+				<!-- Latest Links -->
+				
+	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
+        
+            <li>
+				<h3><a href="/codefirst-views-stored-procs/">EF Code First - Using Views and Stored Procedures</a></h3>
+				<small>18 December 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/ef">Entity Framework</a>
+  
+</small>
+				<p>Programming an application with Entity Framework and Code First does...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/agile-principles-patterns-c/">(Book Review) Agile Principles, Patterns and Practices in C#</a></h3>
+				<small>6 December 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/bookReview">Book Reviews</a>, 
+  
+    <a href="http://vborza.com/tags/agile">Agile</a>, 
+  
+    <a href="http://vborza.com/tags/architecture">Architecture</a>
+  
+</small>
+				<p>One of the best books I've read about agile methodologies...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/ef-database-testing/">Entity Framework & Database Testing Setup</a></h3>
+				<small>4 December 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/ef">Entity Framework</a>, 
+  
+    <a href="http://vborza.com/tags/testing">Testing</a>
+  
+</small>
+				<p>When you're working on an application which uses some sort...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/keep-aspnet-app-ready/">Keeping ASP.NET App Ready</a></h3>
+				<small>22 November 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="http://vborza.com/tags/csharp">C#</a>, 
+  
+    <a href="http://vborza.com/tags/deployment">Deployment</a>
+  
+</small>
+				<p>Hosting an ASP.NET app in IIS has its benefits. However,...</p>
+			</li>
+        
+	</ul>
+				<!-- End Latest Links -->
+
+				<div class="headline-v2">
+					<h2>Browse</h2>
+				</div>
+				<a href="http://vborza.com/archive" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-history"></i> Archive</a>
+				<a href="http://vborza.com/blog" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-sort-amount-desc"></i> All posts</a>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			<!-- End Blog Sidebar -->
+		</div>
+	</div>
+	<!--/end container-->
+</div>
+<!--=== End Blog Posts ===-->
+
+		<!--=== Footer Version 1 ===-->
+		<div class="footer-v1 sticky-footer">
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								2016 &copy; All Rights Reserved.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div><!--/copyright-->
+		</div>
+		<!--=== End Footer Version 1 ===-->
+	</div><!--/End Wrapepr-->
+
+	<!-- JS Global Compulsory -->
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!-- JS Implementing Plugins -->
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/back-to-top.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/smoothScroll.js"></script>
+	<script type="text/javascript" src="http://vborza.com/assets/plugins/jquery.parallax.js"></script>
+	<!-- JS Customization -->
+	<script type="text/javascript" src="http://vborza.com/assets/js/custom.js"></script>
+	<!-- JS Page Level -->
+	<script type="text/javascript" src="http://vborza.com/assets/js/app.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			App.init();
+			App.initParallaxBg();
+		});
+	</script>
+	<!--[if lt IE 9]>
+	<script src="assets/plugins/respond.js"></script>
+	<script src="assets/plugins/html5shiv.js"></script>
+	<script src="assets/plugins/placeholder-IE-fixes.js"></script>
+	<![endif]-->
+	
+</body>
+</html>
