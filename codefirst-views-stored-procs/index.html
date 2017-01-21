@@ -3,7 +3,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-	<title>VBorza | EF Code First - Using Views and Stored Procedures</title>
+	<title>vborza | EF Code First - Views and Stored Procedures</title>
 
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -116,11 +116,11 @@
 		<!--=== End Header ===-->
 
         <!--=== Breadcrumbs v1 ===-->
-<div class="breadcrumbs-v1">
+<!--<div class="breadcrumbs-v1">
 	<div class="container">
-		<span>EF Code First - Using Views and Stored Procedures</span>
+		<span>EF Code First - Views and Stored Procedures</span>
 	</div>
-</div>
+</div>-->
 
 <!--=== Blog Posts ===-->
 <div class="bg-color-light">
@@ -130,6 +130,7 @@
 			<div class="col-md-9">
 				<!-- News v3 -->
 				<div class="news-v3 bg-color-white margin-bottom-30">
+					<img class="img-responsive full-width" src="http://vborza.com/img/posts/orm_vs_views_and_sp.png" alt="">
 					<div class="news-v3-in">
 						<ul class="list-unstyled list-inline blog-info">
 						<li><i class="fa fa-calendar"></i> 18 December 2016</li>
@@ -141,16 +142,16 @@
   
 </li>
 						</ul>
+						<h2><a href="#">EF Code First - Views and Stored Procedures</a></h2>
 						<hr style="margin:15px 0;">	
 
                         <p>
 Programming an application with <em>Entity Framework</em> and <em>Code First</em> does not mean you won't write any raw SQL anymore.
 C# code is great for the basic CRUD operations, but as the application grows, there are cases when you need to write complex queries containing various
-joins (on multiple columns) and aggregate functions, or you need to do some huge
+joins (on multiple columns) and aggregate functions<!--more-->, or you need to do some huge
 bulk updates. These are the situations, when you don't want to rely on SQL generated from LINQ and you 
 rather create a view or a stored procedure, using all the power of SQL Server to improve its performance.
 </p>
-<!--more-->
 
 <img class="img-responsive center" style="margin: auto;" src="http://vborza.com/img/posts/power_raw_sql.jpg" alt=""></br>
 
@@ -366,7 +367,7 @@ var disqus_config = function () {
 	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
         
             <li>
-				<h3><a href="/codefirst-views-stored-procs/">EF Code First - Using Views and Stored Procedures</a></h3>
+				<h3><a href="/codefirst-views-stored-procs/">EF Code First - Views and Stored Procedures</a></h3>
 				<small>18 December 2016, <i class="fa fa-tags"></i> 
   
     <a href="http://vborza.com/tags/csharp">C#</a>, 

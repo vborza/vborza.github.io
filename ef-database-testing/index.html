@@ -3,7 +3,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-	<title>VBorza | Entity Framework & Database Testing Setup</title>
+	<title>vborza | Entity Framework & Database Testing Setup</title>
 
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -116,11 +116,11 @@
 		<!--=== End Header ===-->
 
         <!--=== Breadcrumbs v1 ===-->
-<div class="breadcrumbs-v1">
+<!--<div class="breadcrumbs-v1">
 	<div class="container">
 		<span>Entity Framework & Database Testing Setup</span>
 	</div>
-</div>
+</div>-->
 
 <!--=== Blog Posts ===-->
 <div class="bg-color-light">
@@ -130,6 +130,7 @@
 			<div class="col-md-9">
 				<!-- News v3 -->
 				<div class="news-v3 bg-color-white margin-bottom-30">
+					<img class="img-responsive full-width" src="http://vborza.com/img/posts/testing_ef_db.png" alt="">
 					<div class="news-v3-in">
 						<ul class="list-unstyled list-inline blog-info">
 						<li><i class="fa fa-calendar"></i> 4 December 2016</li>
@@ -143,18 +144,16 @@
   
 </li>
 						</ul>
+						<h2><a href="#">Entity Framework & Database Testing Setup</a></h2>
 						<hr style="margin:15px 0;">	
 
                         <p>
 When you're working on an application which uses some sort of database, there is always a point when you need to test some functionality
-directly on the database server - e.g. complex LINQ queries, transactions handling etc. 
+directly on the database server - e.g. complex LINQ queries, transactions handling etc. <!--more-->
 In this post, we will setup the testing project for an app, where Entity Framework and code-first approach are used. 
 Our target is simple - when tests runner is triggered, a testing db will be created, migrations will be applied and after all the tests will be executed, the 
 db will be deleted.
 </p>
-<!--more-->
-
-<img class="img-responsive center" src="http://vborza.com/img/posts/database_testing.png" alt=""></br>
 
 <div class="headline"><h4>Demo project overview</h4></div>
 <p>
@@ -372,7 +371,7 @@ var disqus_config = function () {
 	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
         
             <li>
-				<h3><a href="/codefirst-views-stored-procs/">EF Code First - Using Views and Stored Procedures</a></h3>
+				<h3><a href="/codefirst-views-stored-procs/">EF Code First - Views and Stored Procedures</a></h3>
 				<small>18 December 2016, <i class="fa fa-tags"></i> 
   
     <a href="http://vborza.com/tags/csharp">C#</a>, 

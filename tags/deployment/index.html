@@ -3,7 +3,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-	<title>VBorza | Blog</title>
+	<title>vborza | Blog</title>
 
 	<!-- Meta -->
 	<meta charset="utf-8">
@@ -128,38 +128,51 @@
 		<!-- Left Sidebar -->
 		<div class="col-md-9 md-margin-bottom-40">
 			<!--Blog Post-->
-				
-			<div class="row blog blog-medium margin-bottom-10">
-				<div class="col-md-12">
-					<h2><a href="/keep-aspnet-app-ready/">Keeping ASP.NET App Ready</a></h2>
-					<ul class="list-unstyled list-inline blog-info">
-						<li><i class="fa fa-calendar"></i> 22 November 2016</li>
-						<!--<li><i class="fa fa-comments"></i> <a href="#">24 Comments</a></li>-->
-						<li><i class="fa fa-tags"></i> 
+			 
+<div class="row blog blog-medium">
+	<div class="col-sm-5">
+		<a href="/keep-aspnet-app-ready/">
+			<img class="img-responsive" src="http://vborza.com/img/posts/tacho.png" alt="">
+		</a>
+	</div>
+	<div class="col-sm-7 news-v3">
+		<div class="news-v3-in-sm no-padding">
+			<ul class="list-inline posted-info">
+				<li><i class="fa fa-tags"></i> 
   
     <a href="http://vborza.com/tags/csharp">C#</a>, 
   
     <a href="http://vborza.com/tags/deployment">Deployment</a>
   
 </li>
-					</ul>
-					<p><p>
+				<li><i class="fa fa-calendar"></i> 22 November 2016</li>
+			</ul>
+			<h2><a href="/keep-aspnet-app-ready/">Keeping ASP.NET App Ready</a></h2>
+			<p><p>
 Hosting an ASP.NET app in IIS has its benefits. However, the consequences of 
 <b>on-demand loading</b> and <b>app pool recycling</b> actions are sometimes undesirable. One of them is that after the app pool has been recycled,
-the application is not initialized until some user hits it. This becomes a problem when we call a longer method on startup, 
-as the user has to wait until the app is fully initialized and his request is handled.
-We will take a look how to deal with this issue in MVC app, but this solution can be applied to any app hosted in IIS. 
-</p>
-
+the application is not initialized until some user hits it.
 
 </p>
-					<p><a class="btn-u btn-brd btn-brd-hover btn-u-sm" href="/keep-aspnet-app-ready/">Read More <i class="fa fa-angle-double-right margin-left-5"></i></a></p>
-				</div>
-			</div>
-			<!--End Blog Post-->
+			<!--<ul class="post-shares">
+									<li>
+										<a href="#">
+											<i class="rounded-x icon-speech"></i>
+											<span>5</span>
+										</a>
+									</li>
+									<li><a href="#"><i class="rounded-x icon-share"></i></a></li>
+									<li><a href="#"><i class="rounded-x icon-heart"></i></a></li>
+								</ul>-->
+		</div>
+	</div>
+</div>
 
-			<hr style="margin-top:5px;" class="margin-bottom-10">
-    
+<!--End Blog Post-->
+<div class="clearfix margin-bottom-20">
+	<hr>
+</div>
+
 			<!--Pagination-->
 			<div class="text-center">
 
