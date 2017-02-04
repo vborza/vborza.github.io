@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://vborza.com/blocking-threads-io-operations/</loc>
+<lastmod>2017-02-04T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>http://vborza.com/codefirst-views-stored-procs/</loc>
 <lastmod>2016-12-18T00:00:00+00:00</lastmod>
 </url>
@@ -51,11 +55,17 @@
 <loc>http://vborza.com/tags/agile/</loc>
 </url>
 <url>
+<loc>http://vborza.com/tags/async/</loc>
+</url>
+<url>
+<loc>http://vborza.com/blog/page2/</loc>
+</url>
+<url>
 <loc>http://vborza.com/assets/plugins/line-icons/index.html</loc>
-<lastmod>2017-01-22T13:29:05+00:00</lastmod>
+<lastmod>2017-02-04T15:59:12+00:00</lastmod>
 </url>
 <url>
 <loc>http://vborza.com/download/vborza_cv.pdf</loc>
-<lastmod>2017-01-22T13:29:05+00:00</lastmod>
+<lastmod>2017-02-04T15:59:12+00:00</lastmod>
 </url>
 </urlset>
