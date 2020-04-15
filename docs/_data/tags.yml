@@ -1,0 +1,16 @@
+csharp:
+    name: C#
+async:
+    name: Async
+architecture:
+    name: Architecture
+deployment:
+    name: Deployment
+ef:
+    name: Entity Framework
+testing:
+    name: Testing
+bookReview:
+    name: Book Reviews
+agile:
+    name: Agile

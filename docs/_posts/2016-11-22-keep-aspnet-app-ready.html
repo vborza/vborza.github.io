@@ -1,0 +1,230 @@
+--- 
+layout: post 
+title: Keeping ASP.NET App Ready
+permalink: /keep-aspnet-app-ready/
+tags:
+  - csharp
+  - deployment
+comments: true
+image: /img/posts/tacho.png
+---
+
+<p>
+Hosting an ASP.NET app in IIS has its benefits. However, the consequences of 
+<b>on-demand loading</b> and <b>app pool recycling</b> actions are sometimes undesirable. One of them is that after the app pool has been recycled,
+the application is not initialized until some user hits it.<!--more--> This becomes a problem when we call a longer method on startup, 
+as the user has to wait until the app is fully initialized and his request is handled.
+We will take a look how to deal with this issue in MVC app, but this solution can be applied to any app hosted in IIS. 
+</p>
+
+<div class="headline"><h4>On-demand loading</h4></div>
+<p>
+The ASP.NET applications are usually hosted in IIS, most of the time within own application pools. App pool is basically a separate windows worker process 
+called <em>w3wp.exe</em>, which is started only when needed. By default, the app pool in IIS has <b>Start mode</b> setup to <b>OnDemand</b>. 
+This way, the app pool starts when IIS receives first request for a particular application bound to that app pool.
+The app pool is running until it's terminated for some reason (Idle Time-out, IIS has been stopped etc.). 
+This enables IIS to host multiple applications in the same time, without keeping some of them (with lower workload) running all the time. 	
+</p>
+
+<div class="headline"><h4>Application pool recycling</h4></div>
+<p>
+App pool recycling means terminating the current worker process and starting the new one (IIS overlaps the recycle method, 
+thus the old process finish the handling of old requests and new process handles the new requests). 
+Process recycling can happen manually, on IIS configuration changes, on IIS server restart, 
+or when defined threshold on memory, on time or amount of processed requests is reached. 
+Generally, when IIS detects that some worker process is unhealthy (for example because of memory leaks) it recycles it, which prevents the app from crashing.
+<blockquote class="text-left bq-green">
+	<p>After app pool recycling, the startup methods from <code>global.asax.cs</code> and <code>startup.cs</code> <b>are NOT called</b> by default. </p>
+</blockquote>
+</p>
+
+<div class="headline"><h4>AppDomain restart</h4></div>
+<p>
+Beside the app pool recycling, there is another source of problem. While the worker process is still alive,
+for any application that runs within the process an <b>AppDomain restart</b> can occur (without app pool recycling). 
+Basically it means that the application starts over with the new configuration, but in the same worker process. 
+AppDomain restart occurs for reasons such as web deploy, changes to <em>web.config</em>, updating files in BIN folder etc.
+ <blockquote class="text-left bq-green">
+	<p>After AppDomain restart, the startup methods from <code>global.asax.cs</code> and <code>startup.cs</code> <b>are NOT called</b> by default. </p>
+</blockquote>
+</p>
+<div class="headline"><h4>Our sample scenario</h4></div>
+<p>
+Let's take a look on our sample MVC app and its requirements. We well call it MONIT and it displays some statistics from financial markets. 
+Because it processes huge amount of data, quite a big in-memory cache has to be constructed on application's startup.<br>
+MONIT's initialization takes a while (cca 10 seconds), because in the <code>global.asax.cs</code> we call <code>BuildInMemoryCache</code> method.
+
+{% highlight csharp %}
+
+public class MvcApplication : System.Web.HttpApplication 
+{
+    protected void Application_Start()
+    {
+        BuildInMemoryCache();
+        ...
+    }
+
+    private static void BuildInMemoryCache()
+    {
+        //build the cache
+    }
+}
+{% endhighlight %}
+
+There is only a couple of financial analysts who use the app. They check the app's dashboard only a few times per day, 
+when they need to check performance of specific financial product. 
+For that reason, most of the time the MONIT's app is stopped, and when some user makes a
+request to the dashboard page, he need to wait until the app is initialized and the dashboard is displayed.
+Of course, the users are unhappy and they demand to fix it, so they can see the dashboard immediately any time they hit the application. 
+</p>
+
+<div class="headline"><h4>How it works now</h4></div>
+<p>
+Because of small amount of requests, the app pool bound to MONIT app is usually stopped. When IIS receives the 
+request for MONIT app, it starts its app pool (i.e. new worker process), then the worker loads the AppDomain - the app is initialized 
+(in case of MVC app, the appropriate methods from <code>global.asax.cs</code> and <code>startup.cs</code> are called) and the request is handled. <br>
+From that moment, the application is up and all the following requests are handled directly, without starting the worker process and AppDomain loading.
+<br>
+However, if there are no more requests for period longer than defined in <b>Idle Time-out</b>, 
+the app pool is terminated. It can happen also for different reasons such as IIS server restart. 
+The app pool starts again when new request for MONIT app is received.
+</p>
+
+<div class="headline"><h4>Keeping the app pool alive</h4></div>
+<p>
+Because starting the new worker process (app pool) takes time, we want the worker process to be alive just after IIS startup and 
+keep it alive all the time.
+We setup it in IIS with following 2 steps.
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>1. Enable automatic startup for app pool (enabled by default)</b></h5>
+Go to app pool, click on basic settings and ensure that <b>Start application pool immediately</b> is checked.
+<br><br><img class="img-responsive center" src="{{site.url}}/img/posts/start_app_pool_immediatelly.PNG" alt=""><br>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>2. Enable Always Running mode</b></h5>
+In app pool's advanced settings, change the <b>Start Mode</b> to <b>AlwaysRunning</b>
+<br><br><img class="img-responsive center" src="{{site.url}}/img/posts/app_pool_advanced_settings.PNG" alt=""><br>
+<hr>
+From now the application pool <b>will not be terminated</b> even if there are no requests for longer time. 
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+However, this does not solve the timeout caused by <code>BuildInMemoryCache</code> method in <code>global.asax.cs</code>,
+which is called on our application's startup, when the first request is received by the worker process. <br>
+Maybe you got an idea that after starting the IIS server, we will do
+the first request to the MONIT app ourselves, so the application will be initialized when the next request from some user comes in.
+The problem is that out app pool can be recycled any time (a new worker process will be created), or our AppDomain could be restarted. 
+Thus for the subsequent request, the MONIT app has to be initialized again. <br>
+</p>
+Luckily, there is a feature in IIS called <b>auto-start</b>, which helps us to keep our application ready either after <b>app pool recycling</b>
+or <b>AppDomain restart</b>.
+<p>
+<p>
+<blockquote class="hero">
+	<p><em> From IIS 8.0 and higher, there is also built in feature called
+   <b><a href="https://www.iis.net/learn/get-started/whats-new-in-iis-8/iis-80-application-initialization">Application Initialization</a></b>.
+   It address the warm-up problem directly, by proactively performing the initialization tasks. It can be even configured to return some static page, 
+   while the warm-up is running.<br> 
+   However, after some testing I found out, that it performs the initialization task after app pool recycling, but not after AppDomain
+   restart (shame on you Microsoft...). Because of that, I suggest <b>auto-start</b> feature in this post. 
+  </em>
+</blockquote>	
+</p>
+
+
+<div class="headline"><h4>Auto-start setup</h4></div>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>1. Enable automatic start-up for Windows Process Activation (WAS) and World Wide Web Publishing (W3SVC) services</b></h5>
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>2. Implement code</b></h5>
+Move the <code>BuildInMemoryCache</code> functionality to separate class from <code>global.asax.cs</code>.
+{% highlight csharp %}
+public class CacheBuilder
+{
+    public static readonly CacheBuilder Instance = new CacheBuilder();
+    private readonly object _lockObject = new object();
+    private bool _initialized;
+
+    private CacheBuilder() { }
+
+    public void BuildInMemoryCache()
+    {
+        lock (_lockObject)
+        {
+            if (_initialized) return;
+            _initialized = true;
+            //build cache
+        }
+    }
+}
+{% endhighlight %}
+
+The <code>CacheBuilder</code> class is singleton, because we want to ensure that the cache will be built only once, 
+even if we will call it from two places. <br>
+First one is the <code>global.asax.cs</code> file. We keep it there for the environments where the auto-start feature won't be setup
+<br> (e.g. development machines).
+{% highlight csharp %}
+public class MvcApplication : System.Web.HttpApplication
+{
+    protected void Application_Start()
+    {
+        CacheBuilder.Instance.BuildInMemoryCache();
+        ...
+    }
+}
+{% endhighlight %}
+
+Second place is a class which implements <code>IProcessHostPreloadClient</code>. This class will be called automatically by WAS
+after app pool recycling or AppDomain restart.
+{% highlight csharp %}
+namespace Monit
+{
+    public class ApplicationPreload : System.Web.Hosting.IProcessHostPreloadClient
+    {
+        public void Preload(string[] parameters)
+        {
+            CacheBuilder.Instance.BuildInMemoryCache();
+        }
+    }
+}
+{% endhighlight %}
+<hr class="devider devider-db-dashed" style="margin:10px 0;">
+<h5><b>3. Enable service auto-start provider</b></h5>
+<p>
+We edit the global <code>applicationHost.config</code> file (<code>%WINDIR%\System32\inetsrv\config\applicationHost.config</code>) as follows.
+<blockquote class="hero">
+	<p><em> On 64bit OS, be sure that you use a 64bit editor for editing <code>applicationHost.config</code>, instead of some 32bit editor 
+  like Notepad++. Otherwise , you are actually opening/saving the <code>C:\Windows\SysWOW64\inetsrv\Config\applicationHost.config</code>
+  regardless of what the title bar or save path may suggest in your editor. This can lead to lot of confusion, believe me...
+  </em>
+</blockquote>	
+
+{% highlight xml %}
+<!-- ... -->
+
+<sites>
+    <site name="MonitSite" id="1">
+        <application path="/" serviceAutoStartEnabled="true"
+                              serviceAutoStartProvider="ApplicationPreload" />
+    </site>
+</sites>
+
+<!-- Add this just after closing 'webLimits' tag -->
+<serviceAutoStartProviders>
+    <add name="ApplicationPreload" type="Monit.ApplicationPreload, Monit" />
+</serviceAutoStartProviders>
+{% endhighlight %}
+</p>
+
+<hr class="devider devider-db-dashed" style="margin:10px 0 20px 0;">
+<div class="headline"><h4>Verify that warm-up is working</h4></div>
+<p>
+The best method to verify if our warm-up method works is by adding some logs to the <code>Preload(string[] parameters)</code> method.
+After we recycle the application pool (e.g. by restarting the IIS server or recycling the app pool manually), 
+or restart the AppDomain by editing the <em>web.config</em> file, the <code>Preload</code> method should be called,
+without making any requests to the hosted application.
+</p>
+<p>
+With this setup, almost every time when some user makes a request to our MONIT application, 
+its in-memory cache is already built so he/she don't have to wait until it's constructed, 
+even if it was the first request after app pool recycling or AppDomain restart.
+I said almost every time, because the user can hit the page just in time, when the app pool was recycled and the preload method is running.
+But that's quite unlikely scenario, especially for low-traffic applications like this one.
+</p>

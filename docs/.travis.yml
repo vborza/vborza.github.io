@@ -1,0 +1,13 @@
+language: ruby
+sudo: required
+rvm:
+- 2.3.1
+install:
+- bundle install
+script: bundle exec rake site:deploy --quiet
+env:
+  global:
+    secure: "GQRBBanu5zOVGYcAIC1/yX9Egv7opDcf8Qra4Gf2oRW4JJ83GqWcdODz/bu9/6i849VxVIau7SJjFVvOl0VtnzE++xiM/y12XiOzl4UAMSWevsGqdD2VgKH+Yuftx3Wjh8HOKFREXSlyxMEFKCGLxbwCzTQVfzLC8LE8s8E2sV3/jHmmlWiuCw0/OXZKykyXSTAwGPfnfdzA7S73vBmgJ4Fjv3ChFnC0SfKzNcQxaRKskc3mrk3/26z6wUMq2WJwVNCuMtf1CCxRDVQY7I16PrxskyEMGukzsMO4gh61L9AuDbzHrNfmgE7RaJf694Wn8b1yMRH1gzY7omJU27hFhHTSxLYmlAFqtUrxOyQ2edXFy0cFfGDG9Pl9NWvR1XaFm7ngNxaVcliO93Vi5if7CfTXDnwHWdSCwT7PCqRocNtE+eil5gX2TMHmcZTJAknE6mYVaEPKZ4kSumX7+sbzeey2sypqyV5J+KatbJHbmf7upaW6AP0gqTDLknfZmWcub1yHycW/grr/AdsPNlkFVssAEe5qwK8P617OxU8p50/AX5Ezz0/yROGJH1PLvVTTTM1aw+Tex3pZmy0XXmXIuU4/YcGN7xqwYiEd4XxQao4DyZn8ATk+No0LUUD2pIrSh6Yz//qJXEEhMY4UR97vVHsXwjR94nPAiBVgayTxmAE="
+branches:
+  only:
+  - source

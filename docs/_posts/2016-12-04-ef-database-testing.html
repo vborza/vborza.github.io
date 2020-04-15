@@ -1,0 +1,171 @@
+--- 
+layout: post 
+title: Entity Framework & Database Testing Setup
+permalink: /ef-database-testing/
+tags:
+  - csharp
+  - ef
+  - testing
+comments: true
+image: /img/posts/testing_ef_db.png
+---
+
+<p>
+When you're working on an application which uses some sort of database, there is always a point when you need to test some functionality
+directly on the database server - e.g. complex LINQ queries, transactions handling etc. <!--more-->
+In this post, we will setup the testing project for an app, where Entity Framework and code-first approach are used. 
+Our target is simple - when tests runner is triggered, a testing db will be created, migrations will be applied and after all the tests will be executed, the 
+db will be deleted.
+</p>
+
+<div class="headline"><h4>Demo project overview</h4></div>
+<p>
+For this post, I've created a simple demo which keeps track of employees and their business trips. The solution contains only 
+<b>Dal</b> project and is available on github - <a href="https://github.com/vborza/ef-codefirst-database-testing">ef-codefirst-database-testing</a>. <br>
+The model is simple - there are <code>Employee</code> and <code>BusinessTrip</code> entities with many-to-many relationship. 
+DAL project implements <code>EmployeesService</code> and <code>BusinessTripsService</code> classes, which provide database related logic on the top 
+of the database model. It uses Entity Framework, so it implements <code>DatabaseContext</code> class for communication with DB.
+</p>
+
+<div class="headline"><h4>Testing project setup</h4></div>
+<p>
+For testing, we add another project in the demo solution and call it <b>Dal.Tests</b>. It references the <b>DAL</b> project 
+and uses <code>xUnit</code> testing framework. We want to test the functionality implemented in the <code>EmployeesService.cs</code> and <code>BusinessTripsService.cs</code>
+classes, and we want to test it on a testing database, but with the same setup as in production. <br>
+So we create <code>EmployeesServiceTests.cs</code> and <code>BusinessTripsServiceTests.cs</code> classes with appropriate testing methods.
+Now we need to find a way how to setup the db before any of the tests will run, execute the tests on the testing db, and delete the db after testing.
+</p>
+
+<div class="headline"><h4>Creating testing database</h4></div>
+<p>
+It's really simple to create a properly initialized testing database from scratch. Everything we need to do are the following steps.
+<blockquote class="hero">
+	<p><em> 
+  Before I wrote this post, I used different and more complicated method for initialization of testing database. It involved sql commands 
+  for database creation and custom migrator class responsible for running migrations from Dal project. During the demo project implementation
+  I discovered much simpler way, which I am gonna show you now.
+  </em>
+</blockquote>	
+
+<hr style="margin:10px 0;">
+<h5><b>1. Add connection string in the test project's<code>App.config</code></b></h5>
+
+{% highlight xml %}
+  <connectionStrings>
+    <add name="EmployeeTrips" connectionString="data source=(LocalDb)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\EmployeeTripsTestDb.mdf;initial catalog=EmployeeTripsTestDb;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework" providerName="System.Data.SqlClient" />
+  </connectionStrings>
+{% endhighlight %}
+
+The connection string's <code>name</code> should be the same as defined in <code>DatabaseContext</code> constructor.
+We want to use <em>(LocalDb)\MSSQLLocalDB</em> as <b>data source</b> - 
+that way, we don't need a full instance of SQL Server Express running on the testing environments. 
+<b>AttachDbFilename</b> setting specifies the path and name of the database file and finally, the <b>initial catalog</b> setting specifies the name 
+of the testing database in the SQL server instance catalog. <br>
+<span class="text-highlights text-highlights-dark-blue">Ensure that you use different <b>initial catalog</b> as in the production environment,
+ otherwise you can override the production database.</span>
+
+<hr style="margin:10px 0;">
+
+<h5><b>2. Create database from code</b></h5>
+The trick for creating the testing database from scratch with the same model as defined in the <b>Dal</b> project lies in using the 
+same database context in the testing project as in the Dal project. All you need to do is call the following piece of code.
+{% highlight csharp %}
+AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory);
+
+using (var context = new DatabaseContext())
+{
+    if (context.Database.Exists())
+    {
+        context.Database.Delete();
+    }
+    context.Database.Create();
+}
+{% endhighlight %}
+
+The <code>context.Database.Create()</code> method creates the db and run the migrations from the Dal project. By default, the database is
+created in the <em>C:\Users\%username%</em> folder. This could be a problem when the tests are running on a CI server (access rights, folder existence...). For that reason,
+with <code>AppDomain.CurrentDomain.SetData</code> we setup the <code>DataDirectory</code> to current <b>AppDomain</b> and the database will be created in the <b>bin</b>
+folder.
+</p>
+
+<div class="headline"><h4>Using testing database fixture</h4></div>
+<p>
+Now we know how to create the testing database. However, where should we create it? When we put the code into the <code>BusinessTripsServiceTests</code>
+class constructor, the database will be created for every test method from this class separately (xUnit creates new instance of class for every test). This will terribly slow down the tests execution and because the tests
+run in parallel by default, it can also cause tests crashing. <br>
+The <code>xUnit</code> framework provides a functionality called <a href="https://xunit.github.io/docs/shared-context.html">fixtures</a>,
+which allows to use the same test context across multiple tests.
+For the methods in the same class, we can implement <b>Class Fixture</b>. 
+That way, the database will be created only once per all tests in the class, which is better, but not exactly what we want. <br>
+What we need to use is a <b>Collection Fixture</b>. That way, we can create a single test context with one testing db 
+and share it among tests in several test classes, and have it cleaned up after all the tests in the test classes have finished.
+</p>
+<p>
+The <code>TestDbFixture</code> implementation should look like this.
+{% highlight csharp %}
+namespace Dal.Tests.Setup
+{
+    public class TestDbFixture : IDisposable
+    {
+        public TestDbFixture()
+        {
+            AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory);
+
+            using (var context = new DatabaseContext())
+            {
+                if (context.Database.Exists())
+                {
+                    context.Database.Delete();
+                }
+
+                context.Database.Create();
+            }
+        }
+
+        public void Dispose()
+        {
+            using (var context = new DatabaseContext())
+            {
+                context.Database.Delete();
+            }
+        }
+    }
+}
+{% endhighlight %}
+Then create the collection definition class with proper <code>[CollectionDefinition]</code> attribute, which will identify the test collection.
+{% highlight csharp %}
+namespace Dal.Tests.Setup
+{
+    [CollectionDefinition("UseDb")]
+    public class TestDbCollection : ICollectionFixture<TestDbFixture>
+    {
+    }
+}
+{% endhighlight %}
+And add the <code>[Collection]</code> attribute to all the test classes that will use the testing database.
+{% highlight csharp %}
+namespace Dal.Tests
+{
+    [Collection("UseDb")]
+    public class BusinessTripsServiceTests : IDisposable
+    {
+      .
+      .
+{% endhighlight %}
+{% highlight csharp %}
+namespace Dal.Tests
+{
+    [Collection("UseDb")]
+    public class EmployeesServiceTests : IDisposable
+    {
+      .
+      .
+{% endhighlight %}
+ <blockquote class="text-left bq-green">
+	<p><b>You can check the full implementation in my demo project <a href="https://github.com/vborza/ef-codefirst-database-testing">ef-codefirst-database-testing</a></b>.</p>
+</blockquote>
+</p>
+<p>
+This way, all the tests will use the same testing database. It will be created before execution of the first test from the collection,
+and it will be deleted after all the tests in the collection have finished. And that's exactly the thing we wanted to achieve.
+</p>
