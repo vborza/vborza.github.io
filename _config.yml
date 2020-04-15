@@ -8,7 +8,7 @@ google_analytics: UA-89496232-1
 include_analytics: true
 
 # Site settings
-url: http://vborza.com
+url: https://borza.dev
 date_format: "%-d %B %Y"
 excerpt_separator: <!--more-->
 # Jekyll source / destination

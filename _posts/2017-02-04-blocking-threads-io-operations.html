@@ -18,7 +18,7 @@ In this post we will diagnose a sample app, monitoring it's threads behavior whe
 
 <p>
 The purpose of our sample console app is to download some pages from the internet. In the real world example, we would probably parse them and 
-process the information somehow. To keep our example simple, instead of downloading 10 various pages, we just download the  page <a href="http://vborza.com/blog">http://vborza.com/blog</a>
+process the information somehow. To keep our example simple, instead of downloading 10 various pages, we just download the  page <a href="https://borza.dev/blog">https://borza.dev/blog</a>
 10 times. We will diagnostic the threads' behavior with <a href="https://msdn.microsoft.com/en-us/library/dd537632(v=vs.120).aspx">Concurrency Visualizer</a> - 
 an optional extension for Visual Studio.
 <br>
@@ -32,7 +32,7 @@ for (var i = 0; i < 10; i++)
 {
     using (var webClient = new WebClient())
     {
-        var response = webClient.DownloadString("http://vborza.com/blog");
+        var response = webClient.DownloadString("https://borza.dev/blog");
     }
 } 
 {% endhighlight %}  
@@ -71,7 +71,7 @@ Parallel.For(0, 10, i =>
 {
     using (var webClient = new WebClient())
     {
-        var response = webClient.DownloadString("http://vborza.com/blog");
+        var response = webClient.DownloadString("https://borza.dev/blog");
     }
 });
 {% endhighlight %}  
@@ -123,7 +123,7 @@ using (var webClient = new HttpClient())
     var tasks = new Task[10];
     for (var i = 0; i < 10; i++)
     {
-        tasks[i] = webClient.GetStringAsync("http://vborza.com/blog");
+        tasks[i] = webClient.GetStringAsync("https://borza.dev/blog");
     }
     Task.WhenAll(tasks).Wait();
 }
