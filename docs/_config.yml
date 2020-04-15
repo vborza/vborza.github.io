@@ -12,8 +12,8 @@ url: http://vborza.com
 date_format: "%-d %B %Y"
 excerpt_separator: <!--more-->
 # Jekyll source / destination
-source:               .
-destination:          _site
+#source:               .
+#destination:          _site
 
 gems: [jekyll-paginate, jekyll-seo-tag, jekyll-sitemap]
 paginate: 5
