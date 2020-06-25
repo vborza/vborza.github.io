@@ -24,7 +24,7 @@ exclude: [vendor]
 show_drafts: false
 
 #seo
-title: vborza 
+title: borza.dev 
 description: Personal blog dedicated to programming, software architecture and cutting edge trends in IT world.
 author:
   twitter: vicBorza
