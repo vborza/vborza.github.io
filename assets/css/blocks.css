@@ -363,7 +363,7 @@
 .breadcrumbs-v1 {
   padding: 50px 0;
   position: relative;
-  background: url(../../img/keyboard2.jpg) center no-repeat;
+  background: url(../../img/keyboard.jpg) center no-repeat;
   background-size: cover; /*Scales the background image to be as large as possible*/
 }
 
@@ -374,12 +374,14 @@
   height: 100%;
   content: " ";
   position: absolute;
-  background: rgba(0,0,0,0.7);
+  /*background: rgba(0,0,0,0.7);*/
+  background: rgba(255,255,255,0.9);
 }
 
 .breadcrumbs-v1 span,
 .breadcrumbs-v1 h1 {
-  color: #fff;
+  /*color: #fff;*/
+  color: #4765a0;
   z-index: 1;
   position: relative;
 }
