@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<title>Borza.Dev | (Book Review) Agile Principles, Patterns and Practices in C#</title>
+	
+	<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="https://borza.dev/favicons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="https://borza.dev/favicons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://borza.dev/favicons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="https://borza.dev/favicons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://borza.dev/favicons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://borza.dev/favicons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://borza.dev/favicons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://borza.dev/favicons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://borza.dev/favicons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://borza.dev/favicons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://borza.dev/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://borza.dev/favicons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://borza.dev/favicons/favicon-16x16.png">
+<link rel="manifest" href="https://borza.dev/favicons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="https://borza.dev/favicons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+	<!-- Web Fonts -->
+	<link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+	<!-- CSS Global Compulsory -->
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/style.css">
+
+	<!-- CSS Header and Footer -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/headers/header-default.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/footers/footer-v1.css">
+
+	<!-- CSS Implementing Plugins -->
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/animate.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+	<!-- CSS Theme -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/theme-colors/dark-blue.css" id="style_color">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/theme-skins/dark.css">
+
+	<!-- CSS Customization -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/custom.css">
+    <link rel="stylesheet" href="https://borza.dev/assets/css/pages/page_clients.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/pages/page_misc_sticky_footer.css">
+
+	<!-- Code snippet highlighting -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/syntax.css">
+
+	<style type="text/css">
+ 		h1:hover {
+  			cursor:pointer;
+ 		}
+	</style>
+	
+	
+		<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-89496232-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	
+
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<meta property="og:title" content="(Book Review) Agile Principles, Patterns and Practices in C#" />
+<meta name="description" content="One of the best books I&#39;ve read about agile methodologies and agile design, or better said, about the software design in general." />
+<meta property="og:description" content="One of the best books I&#39;ve read about agile methodologies and agile design, or better said, about the software design in general." />
+<link rel="canonical" href="https://borza.dev/agile-principles-patterns-c/" />
+<meta property="og:url" content="https://borza.dev/agile-principles-patterns-c/" />
+<meta property="og:site_name" content="borza.dev" />
+<meta property="og:image" content="https://borza.dev/img/posts/agile.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2016-12-06T00:00:00+01:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@vicBorza" />
+<meta name="twitter:creator" content="@vicBorza" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "(Book Review) Agile Principles, Patterns and Practices in C#",
+    "image": "https://borza.dev/img/posts/agile.png",
+    "datePublished": "2016-12-06T00:00:00+01:00",
+    "description": "One of the best books I&#39;ve read about agile methodologies and agile design, or better said, about the software design in general.",
+    "url": "https://borza.dev/agile-principles-patterns-c/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body> 
+	<div class="wrapper">
+		<!--=== Header ===-->
+		<div class="header">
+			<div class="container">
+				<!-- Logo -->
+				<a class="logo" href="https://borza.dev" style="text-decoration:none;">
+					<h1><b><span class="color-green">Borza</span>.Dev</b></h1>
+				</a>
+				<!-- End Logo -->
+
+				<!-- Toggle get grouped for better mobile display -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="fa fa-bars"></span>
+				</button>
+				<!-- End Toggle -->
+			</div><!--/end container-->
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li >
+          				   <a href="/">About</a>
+       					</li>
+
+							<li >
+          						<a href="/blog">Blog</a>
+       					    </li>
+					</ul>
+				</div><!--/end container-->
+			</div><!--/navbar-collapse-->
+		</div>
+		<!--=== End Header ===-->
+
+        <!--=== Breadcrumbs v1 ===-->
+<!--<div class="breadcrumbs-v1">
+	<div class="container">
+		<span>(Book Review) Agile Principles, Patterns and Practices in C#</span>
+	</div>
+</div>-->
+
+<!--=== Blog Posts ===-->
+<div class="bg-color-light">
+	<div class="container content-sm" style="padding-top:30px;">
+		<div class="row">
+			<!-- Blog All Posts -->
+			<div class="col-md-9">
+				<!-- News v3 -->
+				<div class="news-v3 bg-color-white margin-bottom-30">
+					<img class="img-responsive full-width" style="border: solid 1px #bbb;" src="https://borza.dev/img/posts/agile.png" alt="">
+					<div class="news-v3-in">
+						<ul class="list-unstyled list-inline blog-info">
+						<li><i class="fa fa-calendar"></i> 6 December 2016</li>
+						<li><i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/bookReview">Book Reviews</a>, 
+  
+    <a href="https://borza.dev/tags/agile">Agile</a>, 
+  
+    <a href="https://borza.dev/tags/architecture">Architecture</a>
+  
+</li>
+						</ul>
+						<h2><a href="#">(Book Review) Agile Principles, Patterns and Practices in C#</a></h2>
+						<hr style="margin:15px 0;">	
+
+                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+<p>
+One of the best books I've read about agile methodologies and agile design, or better said, about the software design in general.<!--more--> In the first section,
+Robert C. Martin provides a brief overview of the best practices which should be applied in agile teams including planning, iterations, releases etc. 
+However, as a software developer, I was much more interested in the second section of the book - agile design. What I found was an exceptional explanation of object-oriented
+design principles.<br>
+</p>
+
+<div class="headline"><h4>Agile Development</h4></div>
+<p>
+The agile development section has around 100 pages, which is not so much according to the size of the book, which is over 900 pages.
+It briefly covers all the important aspects of agile development as agile manifest, teams organization, overview of extreme programming, planning, test-driven development and 
+refactoring, underscoring the importance of all of them. 
+As I work in an agile team right now, I already know most of these things and I skipped some of the chapters.
+However, I highlighted some statements including the following ones, which are often ignored.
+
+<h5>Test-Driven Development</h5>
+<blockquote class="hero">
+	<p><em>"All production code is written in order to make a failing unit test pass. First, we write a unit test that
+fails because the functionality it is testing for doesn't exist. Then we write the code that makes that
+test pass." </em> <small><em> Agile Principles, Patterns, and Practices in C# (ch. 2)</em></small></p>
+</blockquote>	
+
+<h5>Continuous Integration</h5>
+<blockquote class="hero">
+	<p><em>"The programmers check their code in and integrate several times per day. The rule is simple. The
+first one to check in wins; everybody else merges." <small><em> Agile Principles, Patterns, and Practices in C# (ch. 2)</em></small> </em></p>
+</blockquote>	
+</p>
+
+<div class="headline"><h4>Agile Design</h4></div>
+<p>
+Agile design section provides overview of design smells, SOLID principles, UML diagrams and various design patterns with the appropriate 
+code samples. The principles are then applied to payroll system development use case, which provides a very useful overview of design evolution 
+from the first requirements to the final 
+version of the product. As making improvements to the design, there is lot of design patterns applied which show how to keep the application's architecture 
+simple, easy to change, 
+reusable and properly modularized.<br> 
+I really liked the chapter about packaging the application, as there is not so much literature related to this topic. You can learn how to apply
+the Release-Reuse, Common Closure, Stable Abstraction and other principles to modularize your application properly.  
+</p>
+<p>
+This book has 'C#' int its title, but to be honest, the code samples look more like a pseudo-code to me. There is a lot of cases,
+where an experienced C# developer would use more elegant features of C# language like generics, extensions, event handlers etc. instead of the code
+provided in the book. 
+Also, there is sometimes too much boring code to read, which I suppose most of the advanced programmers will just skip.
+However, it does not change the fact that in the most cases, the author explains the object-oriented programming principles in an outstanding manner.
+</p>
+
+<p>
+There are is a passage which I liked most regarding the way how agile software should be designed.
+<blockquote class="hero">
+	<p><em>"Fool me once, shame on you. Fool me twice, shame on me." <br>
+    To keep from loading our software with needless complexity, we may permit ourselves to be
+fooled <b>once</b>. This means that we initially write our code expecting it not to change. <b>When a change
+occurs, we implement the abstractions that protect us from future changes of that kind</b>. In short, we
+take the first bullet and then make sure that we are protected from any more bullets coming from
+that particular gun.<small><em> Agile Principles, Patterns, and Practices in C# (ch. 9)</em></small> </em></p>
+</blockquote>	
+</p>
+
+<p>
+The software design section of this book provides a lot of handy information about object-oriented principles, patterns and their applications
+in software development. I believe that all the developers, from intermediate to advanced, 
+who care about good software architecture and deal with important design decisions,
+will benefit from reading this book and will use it as reference in the future.  
+</p>
+
+						<!--<ul class="post-shares post-shares-lg">
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-speech"></i>
+									<span>28</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-share"></i>
+									<span>355</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-heart"></i>
+									<span>107</span>
+								</a>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<!-- End News v3 -->
+				<div class="blog-author margin-bottom-30">
+					<a href="https://borza.dev"><img src="https://borza.dev/img/cv_photo_square.jpg" alt=""></a>
+							<div class="blog-author-desc">
+								<div class="overflow-h">
+									<h4>Viktor Borza</h4>
+									<ul class="list-inline">
+										<li><a href="https://www.linkedin.com/in/vborza"><i class="fa fa-linkedin"></i></a></li>
+										<li><a href="https://twitter.com/vicBorza"><i class="fa fa-twitter"></i></a></li>
+										<li><a href="https://www.facebook.com/viktor.borza"><i class="fa fa-facebook"></i></a></li>
+									</ul>
+								</div>
+								<p>Freelance .NET developer with passion for software architecture and cutting-edge trends in programming.</p>
+						</div>
+					</div>
+				<hr>
+
+				<!-- Blog Comments -->
+				
+					<h2 class="margin-bottom-20">Comments</h2>
+					<div id="disqus_thread"></div> 
+						
+<script>
+var disqus_config = function () {
+	this.page.url = "https://borza.dev/agile-principles-patterns-c/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/agile-princinples-pattrens-csharp"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+	var d = document, s = d.createElement('script');
+	s.src = '//vborza.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>
+	Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+					
+				<hr>
+				<!-- End Blog Comments -->
+			</div>
+			<!-- Blog Sidebar -->
+			<div class="col-md-3">
+
+				<div class="headline-v2">
+					<h2>Latest Posts</h2>
+				</div>
+				<!-- Latest Links -->
+				
+	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
+        
+            <li>
+				<h3><a href="/blocking-threads-io-operations/">Don't block your threads with IO bound operations</a></h3>
+				<small>4 February 2017, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/async">Async</a>
+  
+</small>
+				<p>Many of us use the async/await feature in C# projects,...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/codefirst-views-stored-procs/">EF Code First - Views and Stored Procedures</a></h3>
+				<small>18 December 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/ef">Entity Framework</a>
+  
+</small>
+				<p>Programming an application with Entity Framework and Code First does...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/agile-principles-patterns-c/">(Book Review) Agile Principles, Patterns and Practices in C#</a></h3>
+				<small>6 December 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/bookReview">Book Reviews</a>, 
+  
+    <a href="https://borza.dev/tags/agile">Agile</a>, 
+  
+    <a href="https://borza.dev/tags/architecture">Architecture</a>
+  
+</small>
+				<p>One of the best books I've read about agile methodologies...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/ef-database-testing/">Entity Framework & Database Testing Setup</a></h3>
+				<small>4 December 2016, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/ef">Entity Framework</a>, 
+  
+    <a href="https://borza.dev/tags/testing">Testing</a>
+  
+</small>
+				<p>When you're working on an application which uses some sort...</p>
+			</li>
+        
+	</ul>
+				<!-- End Latest Links -->
+
+				<div class="headline-v2">
+					<h2>Browse</h2>
+				</div>
+				<a href="https://borza.dev/archive" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-history"></i> Archive</a>
+				<a href="https://borza.dev/blog" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-sort-amount-desc"></i> All posts</a>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			<!-- End Blog Sidebar -->
+		</div>
+	</div>
+	<!--/end container-->
+</div>
+<!--=== End Blog Posts ===-->
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5883812d7a818277"></script> 
+
+		<!--=== Footer Version 1 ===-->
+		<div class="footer-v1 sticky-footer">
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								2020 &copy; All Rights Reserved.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div><!--/copyright-->
+		</div>
+		<!--=== End Footer Version 1 ===-->
+	</div><!--/End Wrapepr-->
+
+	<!-- JS Global Compulsory -->
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!-- JS Implementing Plugins -->
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/back-to-top.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/smoothScroll.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/jquery.parallax.js"></script>
+	<!-- JS Customization -->
+	<script type="text/javascript" src="https://borza.dev/assets/js/custom.js"></script>
+	<!-- JS Page Level -->
+	<script type="text/javascript" src="https://borza.dev/assets/js/app.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			App.init();
+			App.initParallaxBg();
+		});
+	</script>
+	<!--[if lt IE 9]>
+	<script src="assets/plugins/respond.js"></script>
+	<script src="assets/plugins/html5shiv.js"></script>
+	<script src="assets/plugins/placeholder-IE-fixes.js"></script>
+	<![endif]-->
+
+</body>
+</html>

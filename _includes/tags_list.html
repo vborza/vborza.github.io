@@ -1,8 +1,0 @@
-
-  {% assign tags = site.tags | sort 0 %}
-  {% for tag_item in tags %}
-  {% assign tag = (tag_item | first) %}
-  <li>
-    <a href="{{site.url}}/tags/{{tag}}" {% if page.tag == tag %} class="blog-tags-active" {% endif %}><i class="fa fa-tags"></i> {{site.data.tags[tag].name}} [{{site.tags[tag].size}}]</a>
-  </li>
-  {% endfor %}
