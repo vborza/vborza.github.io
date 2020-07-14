@@ -1,0 +1,89 @@
+--- 
+layout: post 
+title: Breaking down the Signals Platform
+permalink: /breaking-down-signals-platform/
+tags:
+  - csharp
+  - architecture
+  - signals
+comments: true
+image: /img/posts/atoms.png
+---
+
+<blockquote class="hero">
+    <em>I created this technical article for Signals company in cooperation with their marketing team and the original post is published on 
+    <a href="https://blog.signals.network/signals-tech-1-breaking-down-the-signals-platform-16b6c5b46f8e" target="_blank">Signals Tech Blog</a>.</em> <!--more--><br>
+    <em>
+    Signals is a platform where developers and professional traders can write their trading models in a cloud environment, using our own framework based in C#. 
+    Because the technological aspects of the platform are important for the user base, I wrote this article to clear out the design and used technologies. 
+    </em>
+</blockquote>
+
+<p>
+We received so many requests for a walkthrough of Signals’ more technical aspects that we have launched a new series of articles which dives deep into the fundamentals. While all you see is our sleek web or mobile applications, there are many important things happening on the backend. So if you’re curious about what’s happening behind the scenes while you code your strategy, or after clicking the deploy button, this should provide some insight.
+We will discuss what roles our microservices play in the Signals Platform, what data they handle and what kind of APIs they provide. We’re big advocates of the phrase, “a picture is worth a thousand words”, so we will start with a nice diagram displaying all of them together.
+</p>
+<p>
+<img class="img-responsive center" style="margin:auto;" src="{{site.url}}/img/posts/signals_architecture.png" alt="">
+</p>
+
+<div class="headline"><h4>API, Routing and Authentication</h4></div>
+
+<p>
+As you can see, there are quite a few services used as the building blocks of our platform. They use <b>protocol buffers</b> with a <b>messaging broker</b> for lightning fast service-to-service asynchronous communication and <b>GraphQL API</b> as an interface for client facing applications. We use <b>Apollo Server</b> as a backend-for-frontend solution that merges multiple GraphQL APIs from our microservices into one big schema. This way, it provides a unified entry point for web and mobile applications accessing our backend services.
+We have leveraged <b>IdentityServer</b> functionality to implement single sign-on, identity management, authorization, and API security. Together with <b>Ocelot Gateway</b>, it ensures that only authenticated requests are routed to our microservices endpoints.	
+</p>
+
+<div class="headline"><h4>Strategies and Signals</h4></div>
+<p>
+There are several services serving data and pushing real-time updates to the client applications via API. 
+The main one is the <b>Strategies Service</b>, which handles strategies data, ensures proper strategies versioning and holds metadata about backtests and real-time strategies. It stores information about supported data streams, technical indicators, and integrated exchanges. It also consumes strategy logs and signals from the messaging broker, pushing them to GraphQL subscriptions, so that you can see strategy execution progress in real-time.
+</p>
+<p>
+Another service which clients consume directly is <b>Signals Service</b>. Signals service persists signals released by strategies. It also updates and calculates all the strategy performance statistics within each received signal or market price update. These data are then provided to our frontend, so you can see how your strategy is performing.
+</p>
+
+<div class="headline"><h4>Market Data</h4></div>
+<p>
+The last of the main services forming our GraphQL API is the <b>MarketData Service</b>, which persists, aggregates and provides all sorts of market data that boost our beautifully designed trading charts. 
+The MarketData Service connects to our universal storage for market data. It doesn’t contain any exchange-specific logic and it receives and stores data in our standardized format. For that reason, we have implemented <b>MarketDataConnector</b> Services, which connect to concrete exchanges, apply data transformations and push them to message broker. 
+The connector service instance consumes either websockets, or it can use API polling if no real-time updates are available on the given exchange. The connector service is also responsible for exchange’s connection monitoring, identification of gaps in the received market data and additional filling of those gaps.
+</p>
+<p>
+This is how we deconstructed the functionality responsible for handling strategies data, signals, performance statistics and market data.
+</p>
+
+<div class="headline"><h4>Signals Framework and Strategy Compilation</h4></div>
+<p>
+Last but not least, we are going to expose more details about the most important feature of our platform — strategy execution. 
+All the services involved in execution depend on <b>Signals Framework</b>, which is our core trading library, containing definitions of methods and classes needed for implementing strategy code.
+</p>
+<p>
+Strategies, as well as the Signals Framework, are implemented in C# language, which needs to be compiled into assemblies. 
+For that reason, when a user clicks on the backtest or deploy button, the latest version of strategy code from the editor is serialized and sent to 
+the <b>Strategy Compilation Service</b>. The Strategy Compilation Service deserializes and loads the strategy’s source code together with referenced libraries 
+and produces compiled assembly. The assembly is then consumed by the <b>Assembly Provider Service</b>, which persists its bytes together with links to referenced assemblies. 
+The Assembly Provider Service holds and also provides assemblies with the implementation of technical indicators, datastreams and Signals Framework itself.
+</p>
+<p>
+All of these assemblies are used also within a <b>Language Server Service</b>, which enhances our browser-based <b>Monaco code editor</b> with IntelliSense 
+and other IDE-related features.    
+</p>
+
+<div class="headline"><h4>Strategy Executors</h4></div>
+<p>
+    The final step in the strategy execution workflow is creating an isolated service which will execute the strategy. 
+    This part of the process is covered by the <b>Executors Supervisor Service</b>, which creates a new instance of service responsible for strategy execution of each 
+    individual backtest or strategy deployment. The Supervisor Service monitors all these instances, controls their health and manages their lifetime from start to end.
+</p>
+<p>
+    The service responsible for the actual strategy execution is called the <b>Strategy Executor Service</b>. 
+    As mentioned before, this service is instantiated per strategy execution and it implements interfaces from Signals Framework library. 
+    To sum it up, on startup it loads assembly for the defined strategy version and starts pushing data to the strategy. All the logs and signals produced by strategy code 
+    are pushed to the messaging broker and consequently to GraphQL subscriptions.
+</p>
+<p>
+    Based on the strategy execution mode, we have two derivations of the service — <b>Backtest</b> and <b>Live Strategy Executor</b>. The Backtest executor loads historical data, in contrast to Live Executor, 
+    which subscribes to real-time market data updates. The data are pushed to the strategy until the strategy reaches the end of backtest period, or is undeployed. 
+    The executor is then terminated by the Executors Supervisor Service.  
+</p>

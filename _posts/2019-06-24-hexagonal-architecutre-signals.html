@@ -1,0 +1,169 @@
+--- 
+layout: post 
+title: Leveraging Hexagonal architecture in Signals Framework’s design
+permalink: /hexagonal-architecture-signals/
+tags:
+  - csharp
+  - architecture
+  - signals
+comments: true
+image: /img/posts/hex.jpg
+---
+
+<blockquote class="hero">
+    <em>I created this technical article for Signals company in cooperation with their marketing team and the original post is published on 
+    <a href="https://blog.signals.network/leveraging-hexagonal-architecture-in-signals-frameworks-design-145317bae8e8" target="_blank">Signals Tech Blog</a></em>.<br>
+    <!--more-->
+    <em>
+    Signals is a platform where developers and professional traders can write their trading models in a cloud environment, using our own framework based in C#. 
+    Because the technological aspects of the platform are important for the user base, I wrote this article to clear out the design and used technologies. 
+    </em>
+</blockquote>
+
+<p>
+    Since we started developing Signals Platform, we have continued to dedicate extra focus to the core component used for defining your trading models — the <b>Signals Framework</b>. 
+    Our goal was to make the library so <b>stable</b> that a new version of the library would only need to be released when we extend the API with some features beneficial to clients. 
+    We knew we couldn’t force our traders to upgrade their framework version every time we improve the performance of some method or fix some bug. On the other hand, we also wanted the framework to be so <b>flexible</b>, 
+    that it would support various data streams and indicator combinations without modification of the library code itself. 
+    This article shows how we applied <b>hexagonal architecture</b> principles to solve the described challenges.
+</p>
+<p>
+    <img class="img-responsive center" style="margin:auto;" src="{{site.url}}/img/posts/hex_architecture.png" alt="">
+</p>
+
+<div class="headline"><h4>Domain Layer</h4></div>
+<p>
+    The key to achieving stability and flexibility was to make the Signals Framework library as lightweight as possible. 
+    In hexagonal architecture terms, <b>the library basically represents the Signals Network’s domain</b> with models like strategy, data series, market, 
+    exchange, currency pair, various types of orders, data marketplace and indicators marketplace. 
+    Regarding the domain logic, we have only added methods which are related to building automated trading strategies. 
+    There are functions for setting up the strategy data and indicators, registering callbacks executed on data stream updates, 
+    entering and exiting market positions, logging, etc. An important part of the domain is also strategy properties like actual market time, 
+    current positions and pending orders, which are used for making trading decisions.
+</p>
+
+<div class="headline"><h4>Ports and Adapters</h4></div>
+<p>
+    You may wonder how we could claim that the library is lightweight when there are methods like EnterLongLimit or properties like Time in the strategy base class. 
+    Surely, there must be some code responsible for creating order and publishing it all the way to the UI, as well as some logic behind the Time property, 
+    which synchronizes strategy time with all the data streams. You are right, of course, but the actual <b>code executing the logic lives outside of the Signals Framework library 
+    code base</b>. In the library, we just depend on ports’ interfaces, as you can see in the code snippet below.
+
+    {% highlight csharp %}
+    public abstract class StrategyBase : IStrategy
+    {
+      private IEnumerable<Market> StrategyMarkets;
+      private IStrategyTimeProvider StrategyTimeProvider;
+      private IStrategyOrdersManager StrategyOrdersManager;
+      private IStrategyLogger StrategyLogger;
+    
+      public DateTime Time => StrategyTimeProvider.CurrentTime;
+      
+      public abstract void Setup(DataMarketplace data, IndicatorsMarketplace indicators);
+      
+      public IOrder EnterLongLimit(double limitPrice, string label = null)
+      {
+        return StrategyOrdersManager
+          .AddEntryPendingOrder(Market, StrategyPositionType.Long, 
+                                limitPrice, OrderType.Limit, label);
+      }
+      
+      ....
+    }
+    {% endhighlight %}  
+
+    In this preview of strategy base class, <code>IStrategyTimeProvider</code>, <code>IStrategyOrdersManager</code>, and <code>IStrategyLogger</code> 
+    are all just <b>ports</b> held in the Signals Framework codebase. The classes implementing the interfaces (the <b>adapters</b>) are located outside of the library, inside the Strategy Execution Service codebase. Basically, we are using <b>Inversion of Control</b> to keep the framework library clean from all the infrastructure dependencies, as the ports are just interfaces declared within the Signals Framework. 
+    Adapters are the ones implementing the actual business logic and referencing database drivers, messaging broker client, logging providers, etc.
+</p>
+
+<div class="headline"><h4>Data Streams and Indicators Modules</h4></div>
+<p>
+    Ports and adapters keep the domain functions inside Signals Framework really small, as they just contain code passing the parameters to the ports. 
+    This approach was suitable for methods which are already part of the Signals Framework API. But we needed a different solution to support various subscription models 
+    on top of data and indicators marketplaces. 
+    <b>We didn’t want to release a new version of the Signals Framework library every time a new technical indicator or a new type of data stream is introduced to the marketplaces</b>.
+</p>
+<p>
+    More importantly, we wanted to avoid dependency from the framework’s package to various data streams and indicators modules. 
+    On the contrary, we needed to reference the Signals Framework library from those packages, to use DataSeries, Markets, and other domain models. 
+    For that reason, we decided that <b>each indicator and data stream will have its own library</b>, containing its domain models definitions. 
+    When the user wants to use it, they must add a reference to the library in the strategy code editor.
+</p>
+<p>
+    In the following code, you can see a hypothetical implementation of a <b>Google Trends</b> data stream, which could be used for sentiment analysis on the given market. 
+    It contains definitions of <code>GoogleTrend</code> and <code>GoogleTrendOptions</code> domain models. 
+    There is also an implementation of <code>DataMarketPlace</code> extension method <code>GoogleTrends(TimeSpan trendStartOffset, string currency)</code>, 
+    which provides a nice interface for strategy developer to specify the Google Trends stream in one <code>marketPlace.GoogleTrends(5 years, “BTC”)</code> API call.
+
+{% highlight csharp %}
+using Signals.Framework;
+
+public class GoogleTrend 
+{
+  public DateTime Timestamp { get; set; }
+  public string Currency { get; set; }
+  public double Interest { get; set; }
+}
+
+public class GoogleTrendOptions
+{
+  public TimeSpan TrendStartOffset { set; set; }
+  public string Currency { get; set; }
+}
+
+//extension method so that we can define Google Trends stream as 
+//market.GoogleTrends(TimeSpan.FromDays(365*5), "BTC") in strategy Setup method
+public static class GoogleTrendsDataMarketPlaceExtension
+{
+  public static IDataSeries<GoogleTrend> GoogleTrends(this DataMarketPlace marketPlace, 
+                                                      TimeSpan trendStartOffset,
+                                                      string currency)
+  {
+    var options = new GoogleTrendOptions
+    {
+      TrendStartOffset = trendStartOffset,
+      Currency = currency
+    }
+   
+    return marketPlace.ConnectDataSeries<GoogleTrend, GoogleTrendOptions>(options);
+  }
+}
+{% endhighlight %}  
+
+    As you probably noticed, again, there is <b>no implementation of connecting to a real data stream source</b>. 
+    The code that depends on third-party providers lies in the <b>data stream driver assembly</b>, which is directly referenced by the Strategy Execution Service. 
+    This way, <b>strategies just contain references to data streams’ domain models and we can upgrade the data stream driver implementation any time</b>, 
+    without worrying if there is some change which will negatively affect implemented strategies.
+</p>
+
+<div class="headline"><h4>Fruits of the design</h4></div>
+<p>
+    In the end, the architecture of Signals Framework toolkit has come to look like this.
+</p>
+<p>
+    <img class="img-responsive center" style="margin:auto;" src="{{site.url}}/img/posts/hex_final_design.png" alt="">
+</p>
+<p>
+    As you can see, the <b>Signals Framework</b> assembly, <b>data streams</b> assemblies, and <b>indicators</b> assemblies <b>do not depend on any infrastructure components</b>. 
+    This keeps them lightweight, without dependencies on other packages, with just domain models code. <b>The data stream drivers and adapters inside the Strategy Execution Service 
+    are the ones which cope with the infrastructure code</b> and reference all the modules needed for messaging, database and API handling.
+</p>
+<p>
+    <b>The main benefits of this design are:</b>
+<ul>
+    <li><b>Upgrading is easy</b> — we can release new versions of the Strategy Execution Service or data stream drivers with no worries about making changes 
+        which break the strategies’ code.
+    </li>
+    <li><b>Less space for bugs</b> — as the packages referenced from the strategies are lightweight and contain almost no logic, 
+        there is not much space for coding errors and we don’t have to release new versions just for some bug fixes.
+    </li>
+    <li><b>Security</b> — we don’t have to worry that someone can explore the logic and infrastructure details by decompiling the framework’s or data streams’ assemblies and reading the code, 
+        as they contain only models and methods accessible by the end user anyway.
+    </li>
+    <li><b>Stability</b> — since the initial release of the Signals Platform, we are still using the same version of Signals Framework, data streams, and indicators assemblies. 
+        However, we performed numerous upgrades to the data stream drivers and Signals Framework’s adapters implementations. This way, the end users benefit 
+        from improved performance and removed bugs, without any action needed from their side.
+    </li>
+</ul>
+</p>

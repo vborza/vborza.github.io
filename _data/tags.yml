@@ -14,3 +14,7 @@ bookReview:
     name: Book Reviews
 agile:
     name: Agile
+signals:
+    name: Signals Network
+k8s:
+    name: K8s

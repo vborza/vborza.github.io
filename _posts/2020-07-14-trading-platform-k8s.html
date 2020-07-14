@@ -1,0 +1,24 @@
+--- 
+layout: post 
+title: Designing a scalable and secure trading platform on top of Kubernetes
+permalink: /trading-platform-k8s/
+tags:
+  - csharp
+  - architecture
+  - signals
+  - k8s
+comments: true
+image: /img/posts/trading_k8s.png
+---
+<!--more-->
+<p>
+  From the first moment I began working as a lead software architect at Signals Network, I was extremely excited about the software we had planned to build — an online platform, where users can program and run their trading strategies using just their browsers. At the same time, I knew I would have to deal with quite specific requirements for a component,
+  which would be responsible for the execution of user-coded strategies. </p>
+<p>
+  The component had to meet the following criteria:
+  <ul>
+    <li><b>Automated strategy deployment</b><br>
+      Execution of a strategy coded in the web editor must be a fully automated process, without any manual steps or configurations.
+    </li>
+  </ul>
+</p>
