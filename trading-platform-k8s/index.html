@@ -3,7 +3,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
 <!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
 <head>
-	<title>borza.dev | (Book Review) Agile Principles, Patterns and Practices in C#</title>
+	<title>borza.dev | Designing a scalable and secure trading platform on top of Kubernetes</title>
 	
 	<!-- Favicon -->
 <link rel="apple-touch-icon" sizes="57x57" href="https://borza.dev/favicons/apple-icon-57x57.png">
@@ -76,15 +76,15 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<!-- Begin Jekyll SEO tag v2.0.0 -->
-<meta property="og:title" content="(Book Review) Agile Principles, Patterns and Practices in C#" />
-<meta name="description" content="One of the best books I&#39;ve read about agile methodologies and agile design, or better said, about the software design in general." />
-<meta property="og:description" content="One of the best books I&#39;ve read about agile methodologies and agile design, or better said, about the software design in general." />
-<link rel="canonical" href="https://borza.dev/agile-principles-patterns-c/" />
-<meta property="og:url" content="https://borza.dev/agile-principles-patterns-c/" />
+<meta property="og:title" content="Designing a scalable and secure trading platform on top of Kubernetes" />
+<meta name="description" content="" />
+<meta property="og:description" content="" />
+<link rel="canonical" href="https://borza.dev/trading-platform-k8s/" />
+<meta property="og:url" content="https://borza.dev/trading-platform-k8s/" />
 <meta property="og:site_name" content="borza.dev" />
-<meta property="og:image" content="https://borza.dev/img/posts/agile.png" />
+<meta property="og:image" content="https://borza.dev/img/posts/trading_k8s.png" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2016-12-06T00:00:00+01:00" />
+<meta property="article:published_time" content="2020-07-14T00:00:00+02:00" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:site" content="@vicBorza" />
 <meta name="twitter:creator" content="@vicBorza" />
@@ -92,11 +92,11 @@
   {
     "@context": "http://schema.org",
     "@type": "BlogPosting",
-    "headline": "(Book Review) Agile Principles, Patterns and Practices in C#",
-    "image": "https://borza.dev/img/posts/agile.png",
-    "datePublished": "2016-12-06T00:00:00+01:00",
-    "description": "One of the best books I&#39;ve read about agile methodologies and agile design, or better said, about the software design in general.",
-    "url": "https://borza.dev/agile-principles-patterns-c/"
+    "headline": "Designing a scalable and secure trading platform on top of Kubernetes",
+    "image": "https://borza.dev/img/posts/trading_k8s.png",
+    "datePublished": "2020-07-14T00:00:00+02:00",
+    "description": "",
+    "url": "https://borza.dev/trading-platform-k8s/"
   }
 </script>
 <!-- End Jekyll SEO tag -->
@@ -141,7 +141,7 @@
         <!--=== Breadcrumbs v1 ===-->
 <!--<div class="breadcrumbs-v1">
 	<div class="container">
-		<span>(Book Review) Agile Principles, Patterns and Practices in C#</span>
+		<span>Designing a scalable and secure trading platform on top of Kubernetes</span>
 	</div>
 </div>-->
 
@@ -153,89 +153,106 @@
 			<div class="col-md-9">
 				<!-- News v3 -->
 				<div class="news-v3 bg-color-white margin-bottom-30">
-					<img class="img-responsive full-width" style="border: solid 1px #bbb;" src="https://borza.dev/img/posts/agile.png" alt="">
+					<img class="img-responsive full-width" style="border: solid 1px #bbb;" src="https://borza.dev/img/posts/trading_k8s.png" alt="">
 					<div class="news-v3-in">
 						<ul class="list-unstyled list-inline blog-info">
-						<li><i class="fa fa-calendar"></i> 6 December 2016</li>
+						<li><i class="fa fa-calendar"></i> 14 July 2020</li>
 						<li><i class="fa fa-tags"></i> 
   
-    <a href="https://borza.dev/tags/bookReview">Book Reviews</a>, 
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
   
-    <a href="https://borza.dev/tags/agile">Agile</a>, 
+    <a href="https://borza.dev/tags/architecture">Architecture</a>, 
   
-    <a href="https://borza.dev/tags/architecture">Architecture</a>
+    <a href="https://borza.dev/tags/signals">Signals Network</a>, 
+  
+    <a href="https://borza.dev/tags/k8s">K8s</a>
   
 </li>
 						</ul>
-						<h2><a href="#">(Book Review) Agile Principles, Patterns and Practices in C#</a></h2>
+						<h2><a href="#">Designing a scalable and secure trading platform on top of Kubernetes</a></h2>
 						<hr style="margin:15px 0;">	
 
-                        <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                        <!--more-->
 <p>
-One of the best books I've read about agile methodologies and agile design, or better said, about the software design in general.<!--more--> In the first section,
-Robert C. Martin provides a brief overview of the best practices which should be applied in agile teams including planning, iterations, releases etc. 
-However, as a software developer, I was much more interested in the second section of the book - agile design. What I found was an exceptional explanation of object-oriented
-design principles.<br>
+  From the first moment I began working as a lead software architect at Signals Network, I was extremely excited about the software we had planned to build — an online platform, where users can program and run their trading strategies using just their browsers. At the same time, I knew I would have to deal with quite specific requirements for a component,
+  which would be responsible for the execution of user-coded strategies. </p>
+<p>
+  The component had to meet the following criteria:
+  <ul>
+    <li><b>Automated strategy deployment</b><br>
+      Execution of a strategy coded in the web editor must be a fully automated process, without any manual steps or configurations.
+    </li>
+    <li><b>Parallel execution</b><br>
+      All deployed strategies must be subscribed to the market data events (new trade, new price, etc.) and process them in real-time. 
+      This must happen for all strategies at once, as soon as the event is received from the exchange.
+    </li>
+    <li><b>Scalability</b><br>
+      The component for strategy execution must be horizontally scalable — i.e. if there won’t be enough resources to run more strategies, we can just throw in another server and scale it out.
+    </li>
+    <li><b>Security</b><br>
+      We had to figure out how to execute the strategies while keeping them isolated from the rest of our services or other strategies. In the end, the trading strategy is a piece of untrusted C# code provided by the end-user, which we need to run on our infrastructure. Even if we restricted the set of assemblies available in our online code editor, a strategy implementation could still contain some malicious code. 
+      We just couldn’t take the risk that some misbehaving strategy will affect our trading platform.
+    </li>
+    <li><b>Resources limits</b><br>
+      There should be a way to define limits for resources that a strategy could consume, as we don’t have full control over the strategies’ code. 
+      It could happen that some buggy or poorly programmed strategy could eat all the free RAM or too much CPU and affect other services as well.
+    </li>
+  </ul>
 </p>
 
-<div class="headline"><h4>Agile Development</h4></div>
+<div class="headline"><h4>What about the Actor Model?</h4></div>
 <p>
-The agile development section has around 100 pages, which is not so much according to the size of the book, which is over 900 pages.
-It briefly covers all the important aspects of agile development as agile manifest, teams organization, overview of extreme programming, planning, test-driven development and 
-refactoring, underscoring the importance of all of them. 
-As I work in an agile team right now, I already know most of these things and I skipped some of the chapters.
-However, I highlighted some statements including the following ones, which are often ignored.
-
-<h5>Test-Driven Development</h5>
-<blockquote class="hero">
-	<p><em>"All production code is written in order to make a failing unit test pass. First, we write a unit test that
-fails because the functionality it is testing for doesn't exist. Then we write the code that makes that
-test pass." </em> <small><em> Agile Principles, Patterns, and Practices in C# (ch. 2)</em></small></p>
-</blockquote>	
-
-<h5>Continuous Integration</h5>
-<blockquote class="hero">
-	<p><em>"The programmers check their code in and integrate several times per day. The rule is simple. The
-first one to check in wins; everybody else merges." <small><em> Agile Principles, Patterns, and Practices in C# (ch. 2)</em></small> </em></p>
-</blockquote>	
-</p>
-
-<div class="headline"><h4>Agile Design</h4></div>
-<p>
-Agile design section provides overview of design smells, SOLID principles, UML diagrams and various design patterns with the appropriate 
-code samples. The principles are then applied to payroll system development use case, which provides a very useful overview of design evolution 
-from the first requirements to the final 
-version of the product. As making improvements to the design, there is lot of design patterns applied which show how to keep the application's architecture 
-simple, easy to change, 
-reusable and properly modularized.<br> 
-I really liked the chapter about packaging the application, as there is not so much literature related to this topic. You can learn how to apply
-the Release-Reuse, Common Closure, Stable Abstraction and other principles to modularize your application properly.  
+  I would guess that anybody who has experience with building some trading, online gaming, social media, or complex event stream processing applications, 
+  has heard about the <a href="https://doc.akka.io/docs/akka/current/typed/guide/actors-intro.html" target="_blank">Actor Model</a> and what benefits it brings to distributed computing architecture.
 </p>
 <p>
-This book has 'C#' int its title, but to be honest, the code samples look more like a pseudo-code to me. There is a lot of cases,
-where an experienced C# developer would use more elegant features of C# language like generics, extensions, event handlers etc. instead of the code
-provided in the book. 
-Also, there is sometimes too much boring code to read, which I suppose most of the advanced programmers will just skip.
-However, it does not change the fact that in the most cases, the author explains the object-oriented programming principles in an outstanding manner.
+  When joining Signals Network, I already had some experience with building a C# application for automated trading on smaller crypto exchanges. In the application, I was using the <a href="https://getakka.net/" target="_blank">Akka.NET</a> framework, 
+  which meets the requirements for automated strategy deployment, parallel execution, and scalability. Originally, I aimed to use the features of Akka.Net for the real-time trading functionality in Signals Network as well, 
+  but it did not provide any way to limit the resources consumed by individual actors or to isolate the strategy execution process to the level we needed.
 </p>
 
+<div class="headline"><h4>Let’s check the Docker containers</h4></div>
 <p>
-There are is a passage which I liked most regarding the way how agile software should be designed.
-<blockquote class="hero">
-	<p><em>"Fool me once, shame on you. Fool me twice, shame on me." <br>
-    To keep from loading our software with needless complexity, we may permit ourselves to be
-fooled <b>once</b>. This means that we initially write our code expecting it not to change. <b>When a change
-occurs, we implement the abstractions that protect us from future changes of that kind</b>. In short, we
-take the first bullet and then make sure that we are protected from any more bullets coming from
-that particular gun.<small><em> Agile Principles, Patterns, and Practices in C# (ch. 9)</em></small> </em></p>
-</blockquote>	
+  Except for the VMs, which were inefficient for our use-case, the most secure way I could think about, was running each strategy as an isolated .Net Core service in its own Docker container, 
+  which can be secured even more with a module like <a href="https://docs.docker.com/engine/security/apparmor/" target="_blank">AppArmor</a> to prevent strategy code from executing some malicious actions.
+</p>
+<p>
+  Docker is designed to run multiple containers, so there shouldn’t be an issue with the parallel execution of multiple strategies. It also provides ways to set resources limits for each container. 
+  However, to prove this concept, I needed to implement the automated strategy deployment functionality — i.e. find a way to dynamically start the strategy execution container when the user clicks on the “deploy strategy” button in the UI. 
+  Using just the docker, the solution would definitely involve some low-level bash scripts, which are often hard to maintain and debug. It would definitely be better to reuse functionality already embedded in some of the container orchestration platforms.
 </p>
 
+<div class="headline"><h4>Bring Kubernetes to the table</h4></div>
 <p>
-The software design section of this book provides a lot of handy information about object-oriented principles, patterns and their applications
-in software development. I believe that all the developers, from intermediate to advanced, 
-who care about good software architecture and deal with important design decisions,
-will benefit from reading this book and will use it as reference in the future.  
+  Luckily, at the time I was cracking this problem, Kubernetes was around for quite a while and we were already using it to host our microservices. I decided to take a better look under its hood, to check how it will meet our needs for the strategy execution component.
+</p>
+<p>
+  Kubernetes clusters are horizontally scalable, and I discovered that it also provides a way to <a href="https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/#specify-a-cpu-request-and-a-cpu-limit" target="_blank">set CPU and memory limits</a> for the pods. 
+  Regarding security, besides the fact that each service runs in an isolated Docker container, <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/" target="_blank">Pod Security Policies</a> 
+  allowed us to define restrictive rules for accessing the filesystem, network, system calls, etc. As the pods with various strategies are running all at once, this setup also meets the parallel execution requirement.
+</p>
+<p>
+  The last piece of the puzzle was the automated strategy deployment. As a programmer, I was already familiar with the Kubernetes command-line tool Kubectl. However, to use it from our .Net Core service subscribed to the commands from the web application, 
+  I would have to start external processes from my C# code, which is always a little bit tricky and a dangerous thing to do. Fortunately, Kubernetes has also fully-featured <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/" target="_blank">REST API</a> with a bunch of client libraries written in various languages, 
+  including C# as well. With API endpoints providing functionality to create/update/delete a deployment, start a pod, or get the status of all containers in the cluster, there was nothing blocking me from programming our strategy execution service.
+</p>
+
+<div class="headline"><h4>Final design</h4></div>
+<p>
+  The final architecture of the strategy execution component looks like this:<br> <em>(infrastructure and implementation details omitted for brevity)</em>
+</p>
+<p>
+  <img class="img-responsive center" style="margin:auto;" src="https://borza.dev/img/posts/k8s_signals_design.png" alt="K8S Signals Design">
+</p>
+<p>
+  <b>Strategy Executors Supervisor</b> is a .Net Core service responsible for the management of <b>Strategy Executor Containers</b>. 
+  It uses the <a href="https://github.com/kubernetes-client/csharp" target="_blank">Kubernetes C# Client</a> to dynamically start or stop the executors according 
+  to the requests received from the <b>Web Application</b>. Every executor container runs an instance of <b>Strategy Executor Service</b>, which dynamically loads the specified 
+  strategy from <b>Strategies Registry</b>, subscribes to market events, and runs the strategy until it’s stopped.
+</p>
+<p>
+  Since we released the demo version of the Signals platform, the implementation of the strategy execution component improved significantly but the overall architecture stayed the same, as it still satisfies all our requirements. 
+  We are just using more Kubernetes features like container lifecycle callbacks, persistent volumes, liveness/readiness/startup probes, and other mechanisms to easily recover from failures and keep the strategies always running.
 </p>
 
 						<!--<ul class="post-shares post-shares-lg">
@@ -284,8 +301,8 @@ will benefit from reading this book and will use it as reference in the future.
 						
 <script>
 var disqus_config = function () {
-	this.page.url = "https://borza.dev/agile-principles-patterns-c/";  // Replace PAGE_URL with your page's canonical URL variable
-	this.page.identifier = "/agile-princinples-pattrens-csharp"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+	this.page.url = "https://borza.dev/trading-platform-k8s/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/trading-platform-k8s"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
 };
 
 (function() { // DON'T EDIT BELOW THIS LINE

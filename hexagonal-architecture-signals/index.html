@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->
+<!--[if !IE]><!--> <html lang="en"> <!--<![endif]-->
+<head>
+	<title>borza.dev | Leveraging Hexagonal architecture in Signals Framework’s design</title>
+	
+	<!-- Favicon -->
+<link rel="apple-touch-icon" sizes="57x57" href="https://borza.dev/favicons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="https://borza.dev/favicons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="https://borza.dev/favicons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="https://borza.dev/favicons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="https://borza.dev/favicons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="https://borza.dev/favicons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="https://borza.dev/favicons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="https://borza.dev/favicons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://borza.dev/favicons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://borza.dev/favicons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://borza.dev/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="https://borza.dev/favicons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://borza.dev/favicons/favicon-16x16.png">
+<link rel="manifest" href="https://borza.dev/favicons/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="https://borza.dev/favicons/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+
+	<!-- Web Fonts -->
+	<link rel='stylesheet' type='text/css' href='//fonts.googleapis.com/css?family=Open+Sans:400,300,600&amp;subset=cyrillic,latin'>
+
+	<!-- CSS Global Compulsory -->
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/style.css">
+
+	<!-- CSS Header and Footer -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/headers/header-default.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/footers/footer-v1.css">
+
+	<!-- CSS Implementing Plugins -->
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/animate.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/line-icons/line-icons.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/plugins/font-awesome/css/font-awesome.min.css">
+
+	<!-- CSS Theme -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/theme-colors/dark-blue.css" id="style_color">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/theme-skins/dark.css">
+
+	<!-- CSS Customization -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/custom.css">
+    <link rel="stylesheet" href="https://borza.dev/assets/css/pages/page_clients.css">
+	<link rel="stylesheet" href="https://borza.dev/assets/css/pages/page_misc_sticky_footer.css">
+
+	<!-- Code snippet highlighting -->
+	<link rel="stylesheet" href="https://borza.dev/assets/css/syntax.css">
+
+	<style type="text/css">
+ 		h1:hover {
+  			cursor:pointer;
+ 		}
+	</style>
+	
+	
+		<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-89496232-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+	
+
+	<!-- Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Begin Jekyll SEO tag v2.0.0 -->
+<meta property="og:title" content="Leveraging Hexagonal architecture in Signals Framework’s design" />
+<meta name="description" content="    I created this technical article for Signals company in cooperation with their marketing team and the original post is published on     Signals Tech Blog.    " />
+<meta property="og:description" content="    I created this technical article for Signals company in cooperation with their marketing team and the original post is published on     Signals Tech Blog.    " />
+<link rel="canonical" href="https://borza.dev/hexagonal-architecture-signals/" />
+<meta property="og:url" content="https://borza.dev/hexagonal-architecture-signals/" />
+<meta property="og:site_name" content="borza.dev" />
+<meta property="og:image" content="https://borza.dev/img/posts/hex.jpg" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2019-06-24T00:00:00+02:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@vicBorza" />
+<meta name="twitter:creator" content="@vicBorza" />
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Leveraging Hexagonal architecture in Signals Framework’s design",
+    "image": "https://borza.dev/img/posts/hex.jpg",
+    "datePublished": "2019-06-24T00:00:00+02:00",
+    "description": "    I created this technical article for Signals company in cooperation with their marketing team and the original post is published on     Signals Tech Blog.    ",
+    "url": "https://borza.dev/hexagonal-architecture-signals/"
+  }
+</script>
+<!-- End Jekyll SEO tag -->
+</head>
+
+<body> 
+	<div class="wrapper">
+		<!--=== Header ===-->
+		<div class="header">
+			<div class="container">
+				<!-- Logo -->
+				<a class="logo" href="https://borza.dev" style="text-decoration:none;">
+					<h1><b><span class="color-green">borza</span>.dev</b></h1>
+				</a>
+				<!-- End Logo -->
+
+				<!-- Toggle get grouped for better mobile display -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="fa fa-bars"></span>
+				</button>
+				<!-- End Toggle -->
+			</div><!--/end container-->
+
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse mega-menu navbar-responsive-collapse">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li >
+          				   <a href="/">About</a>
+       					</li>
+
+							<li >
+          						<a href="/blog">Blog</a>
+       					    </li>
+					</ul>
+				</div><!--/end container-->
+			</div><!--/navbar-collapse-->
+		</div>
+		<!--=== End Header ===-->
+
+        <!--=== Breadcrumbs v1 ===-->
+<!--<div class="breadcrumbs-v1">
+	<div class="container">
+		<span>Leveraging Hexagonal architecture in Signals Framework’s design</span>
+	</div>
+</div>-->
+
+<!--=== Blog Posts ===-->
+<div class="bg-color-light">
+	<div class="container content-sm" style="padding-top:30px;">
+		<div class="row">
+			<!-- Blog All Posts -->
+			<div class="col-md-9">
+				<!-- News v3 -->
+				<div class="news-v3 bg-color-white margin-bottom-30">
+					<img class="img-responsive full-width" style="border: solid 1px #bbb;" src="https://borza.dev/img/posts/hex.jpg" alt="">
+					<div class="news-v3-in">
+						<ul class="list-unstyled list-inline blog-info">
+						<li><i class="fa fa-calendar"></i> 24 June 2019</li>
+						<li><i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/architecture">Architecture</a>, 
+  
+    <a href="https://borza.dev/tags/signals">Signals Network</a>
+  
+</li>
+						</ul>
+						<h2><a href="#">Leveraging Hexagonal architecture in Signals Framework’s design</a></h2>
+						<hr style="margin:15px 0;">	
+
+                        <blockquote class="hero">
+    <em>I created this technical article for Signals company in cooperation with their marketing team and the original post is published on 
+    <a href="https://blog.signals.network/leveraging-hexagonal-architecture-in-signals-frameworks-design-145317bae8e8" target="_blank">Signals Tech Blog</a></em>.<br>
+    <!--more-->
+    <em>
+    Signals is a platform where developers and professional traders can write their trading models in a cloud environment, using our own framework based in C#. 
+    Because the technological aspects of the platform are important for the user base, I wrote this article to clear out the design and used technologies. 
+    </em>
+</blockquote>
+
+<p>
+    Since we started developing Signals Platform, we have continued to dedicate extra focus to the core component used for defining your trading models — the <b>Signals Framework</b>. 
+    Our goal was to make the library so <b>stable</b> that a new version of the library would only need to be released when we extend the API with some features beneficial to clients. 
+    We knew we couldn’t force our traders to upgrade their framework version every time we improve the performance of some method or fix some bug. On the other hand, we also wanted the framework to be so <b>flexible</b>, 
+    that it would support various data streams and indicator combinations without modification of the library code itself. 
+    This article shows how we applied <b>hexagonal architecture</b> principles to solve the described challenges.
+</p>
+<p>
+    <img class="img-responsive center" style="margin:auto;" src="https://borza.dev/img/posts/hex_architecture.png" alt="">
+</p>
+
+<div class="headline"><h4>Domain Layer</h4></div>
+<p>
+    The key to achieving stability and flexibility was to make the Signals Framework library as lightweight as possible. 
+    In hexagonal architecture terms, <b>the library basically represents the Signals Network’s domain</b> with models like strategy, data series, market, 
+    exchange, currency pair, various types of orders, data marketplace and indicators marketplace. 
+    Regarding the domain logic, we have only added methods which are related to building automated trading strategies. 
+    There are functions for setting up the strategy data and indicators, registering callbacks executed on data stream updates, 
+    entering and exiting market positions, logging, etc. An important part of the domain is also strategy properties like actual market time, 
+    current positions and pending orders, which are used for making trading decisions.
+</p>
+
+<div class="headline"><h4>Ports and Adapters</h4></div>
+<p>
+    You may wonder how we could claim that the library is lightweight when there are methods like EnterLongLimit or properties like Time in the strategy base class. 
+    Surely, there must be some code responsible for creating order and publishing it all the way to the UI, as well as some logic behind the Time property, 
+    which synchronizes strategy time with all the data streams. You are right, of course, but the actual <b>code executing the logic lives outside of the Signals Framework library 
+    code base</b>. In the library, we just depend on ports’ interfaces, as you can see in the code snippet below.
+
+    <figure class="highlight"><pre><code class="language-csharp" data-lang="csharp">    <span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">StrategyBase</span> <span class="p">:</span> <span class="n">IStrategy</span>
+    <span class="p">{</span>
+      <span class="k">private</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">Market</span><span class="p">&gt;</span> <span class="n">StrategyMarkets</span><span class="p">;</span>
+      <span class="k">private</span> <span class="n">IStrategyTimeProvider</span> <span class="n">StrategyTimeProvider</span><span class="p">;</span>
+      <span class="k">private</span> <span class="n">IStrategyOrdersManager</span> <span class="n">StrategyOrdersManager</span><span class="p">;</span>
+      <span class="k">private</span> <span class="n">IStrategyLogger</span> <span class="n">StrategyLogger</span><span class="p">;</span>
+    
+      <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Time</span> <span class="p">=&gt;</span> <span class="n">StrategyTimeProvider</span><span class="p">.</span><span class="n">CurrentTime</span><span class="p">;</span>
+      
+      <span class="k">public</span> <span class="k">abstract</span> <span class="k">void</span> <span class="nf">Setup</span><span class="p">(</span><span class="n">DataMarketplace</span> <span class="n">data</span><span class="p">,</span> <span class="n">IndicatorsMarketplace</span> <span class="n">indicators</span><span class="p">);</span>
+      
+      <span class="k">public</span> <span class="n">IOrder</span> <span class="nf">EnterLongLimit</span><span class="p">(</span><span class="kt">double</span> <span class="n">limitPrice</span><span class="p">,</span> <span class="kt">string</span> <span class="n">label</span> <span class="p">=</span> <span class="k">null</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="k">return</span> <span class="n">StrategyOrdersManager</span>
+          <span class="p">.</span><span class="nf">AddEntryPendingOrder</span><span class="p">(</span><span class="n">Market</span><span class="p">,</span> <span class="n">StrategyPositionType</span><span class="p">.</span><span class="n">Long</span><span class="p">,</span> 
+                                <span class="n">limitPrice</span><span class="p">,</span> <span class="n">OrderType</span><span class="p">.</span><span class="n">Limit</span><span class="p">,</span> <span class="n">label</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="p">....</span>
+    <span class="p">}</span>
+    </code></pre></figure>  
+
+    In this preview of strategy base class, <code>IStrategyTimeProvider</code>, <code>IStrategyOrdersManager</code>, and <code>IStrategyLogger</code> 
+    are all just <b>ports</b> held in the Signals Framework codebase. The classes implementing the interfaces (the <b>adapters</b>) are located outside of the library, inside the Strategy Execution Service codebase. Basically, we are using <b>Inversion of Control</b> to keep the framework library clean from all the infrastructure dependencies, as the ports are just interfaces declared within the Signals Framework. 
+    Adapters are the ones implementing the actual business logic and referencing database drivers, messaging broker client, logging providers, etc.
+</p>
+
+<div class="headline"><h4>Data Streams and Indicators Modules</h4></div>
+<p>
+    Ports and adapters keep the domain functions inside Signals Framework really small, as they just contain code passing the parameters to the ports. 
+    This approach was suitable for methods which are already part of the Signals Framework API. But we needed a different solution to support various subscription models 
+    on top of data and indicators marketplaces. 
+    <b>We didn’t want to release a new version of the Signals Framework library every time a new technical indicator or a new type of data stream is introduced to the marketplaces</b>.
+</p>
+<p>
+    More importantly, we wanted to avoid dependency from the framework’s package to various data streams and indicators modules. 
+    On the contrary, we needed to reference the Signals Framework library from those packages, to use DataSeries, Markets, and other domain models. 
+    For that reason, we decided that <b>each indicator and data stream will have its own library</b>, containing its domain models definitions. 
+    When the user wants to use it, they must add a reference to the library in the strategy code editor.
+</p>
+<p>
+    In the following code, you can see a hypothetical implementation of a <b>Google Trends</b> data stream, which could be used for sentiment analysis on the given market. 
+    It contains definitions of <code>GoogleTrend</code> and <code>GoogleTrendOptions</code> domain models. 
+    There is also an implementation of <code>DataMarketPlace</code> extension method <code>GoogleTrends(TimeSpan trendStartOffset, string currency)</code>, 
+    which provides a nice interface for strategy developer to specify the Google Trends stream in one <code>marketPlace.GoogleTrends(5 years, “BTC”)</code> API call.
+
+<figure class="highlight"><pre><code class="language-csharp" data-lang="csharp"><span class="k">using</span> <span class="nn">Signals.Framework</span><span class="p">;</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">GoogleTrend</span> 
+<span class="p">{</span>
+  <span class="k">public</span> <span class="n">DateTime</span> <span class="n">Timestamp</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">public</span> <span class="kt">string</span> <span class="n">Currency</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">public</span> <span class="kt">double</span> <span class="n">Interest</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">class</span> <span class="nc">GoogleTrendOptions</span>
+<span class="p">{</span>
+  <span class="k">public</span> <span class="n">TimeSpan</span> <span class="n">TrendStartOffset</span> <span class="p">{</span> <span class="k">set</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="k">public</span> <span class="kt">string</span> <span class="n">Currency</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">//extension method so that we can define Google Trends stream as 
+//market.GoogleTrends(TimeSpan.FromDays(365*5), "BTC") in strategy Setup method
+</span><span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">GoogleTrendsDataMarketPlaceExtension</span>
+<span class="p">{</span>
+  <span class="k">public</span> <span class="k">static</span> <span class="n">IDataSeries</span><span class="p">&lt;</span><span class="n">GoogleTrend</span><span class="p">&gt;</span> <span class="nf">GoogleTrends</span><span class="p">(</span><span class="k">this</span> <span class="n">DataMarketPlace</span> <span class="n">marketPlace</span><span class="p">,</span> 
+                                                      <span class="n">TimeSpan</span> <span class="n">trendStartOffset</span><span class="p">,</span>
+                                                      <span class="kt">string</span> <span class="n">currency</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="kt">var</span> <span class="n">options</span> <span class="p">=</span> <span class="k">new</span> <span class="n">GoogleTrendOptions</span>
+    <span class="p">{</span>
+      <span class="n">TrendStartOffset</span> <span class="p">=</span> <span class="n">trendStartOffset</span><span class="p">,</span>
+      <span class="n">Currency</span> <span class="p">=</span> <span class="n">currency</span>
+    <span class="p">}</span>
+   
+    <span class="k">return</span> <span class="n">marketPlace</span><span class="p">.</span><span class="n">ConnectDataSeries</span><span class="p">&lt;</span><span class="n">GoogleTrend</span><span class="p">,</span> <span class="n">GoogleTrendOptions</span><span class="p">&gt;(</span><span class="n">options</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></figure>  
+
+    As you probably noticed, again, there is <b>no implementation of connecting to a real data stream source</b>. 
+    The code that depends on third-party providers lies in the <b>data stream driver assembly</b>, which is directly referenced by the Strategy Execution Service. 
+    This way, <b>strategies just contain references to data streams’ domain models and we can upgrade the data stream driver implementation any time</b>, 
+    without worrying if there is some change which will negatively affect implemented strategies.
+</p>
+
+<div class="headline"><h4>Fruits of the design</h4></div>
+<p>
+    In the end, the architecture of Signals Framework toolkit has come to look like this.
+</p>
+<p>
+    <img class="img-responsive center" style="margin:auto;" src="https://borza.dev/img/posts/hex_final_design.png" alt="Signals Framework Architecture">
+</p>
+<p>
+    As you can see, the <b>Signals Framework</b> assembly, <b>data streams</b> assemblies, and <b>indicators</b> assemblies <b>do not depend on any infrastructure components</b>. 
+    This keeps them lightweight, without dependencies on other packages, with just domain models code. <b>The data stream drivers and adapters inside the Strategy Execution Service 
+    are the ones which cope with the infrastructure code</b> and reference all the modules needed for messaging, database and API handling.
+</p>
+<p>
+    <b>The main benefits of this design are:</b>
+<ul>
+    <li><b>Upgrading is easy</b> — we can release new versions of the Strategy Execution Service or data stream drivers with no worries about making changes 
+        which break the strategies’ code.
+    </li>
+    <li><b>Less space for bugs</b> — as the packages referenced from the strategies are lightweight and contain almost no logic, 
+        there is not much space for coding errors and we don’t have to release new versions just for some bug fixes.
+    </li>
+    <li><b>Security</b> — we don’t have to worry that someone can explore the logic and infrastructure details by decompiling the framework’s or data streams’ assemblies and reading the code, 
+        as they contain only models and methods accessible by the end user anyway.
+    </li>
+    <li><b>Stability</b> — since the initial release of the Signals Platform, we are still using the same version of Signals Framework, data streams, and indicators assemblies. 
+        However, we performed numerous upgrades to the data stream drivers and Signals Framework’s adapters implementations. This way, the end users benefit 
+        from improved performance and removed bugs, without any action needed from their side.
+    </li>
+</ul>
+</p>
+
+
+						<!--<ul class="post-shares post-shares-lg">
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-speech"></i>
+									<span>28</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-share"></i>
+									<span>355</span>
+								</a>
+							</li>
+							<li>
+								<a href="#">
+									<i class="rounded-x icon-heart"></i>
+									<span>107</span>
+								</a>
+							</li>
+						</ul>-->
+					</div>
+				</div>
+				<!-- End News v3 -->
+				<div class="blog-author margin-bottom-30">
+					<a href="https://borza.dev"><img src="https://borza.dev/img/cv_photo_square.jpg" alt=""></a>
+							<div class="blog-author-desc">
+								<div class="overflow-h">
+									<h4>Viktor Borza</h4>
+									<ul class="list-inline">
+										<li><a href="https://www.linkedin.com/in/vborza"><i class="fa fa-linkedin"></i></a></li>
+										<li><a href="https://twitter.com/vicBorza"><i class="fa fa-twitter"></i></a></li>
+										<li><a href="https://www.facebook.com/viktor.borza"><i class="fa fa-facebook"></i></a></li>
+									</ul>
+								</div>
+								<p>Freelance .NET developer with passion for software architecture and cutting-edge trends in programming.</p>
+						</div>
+					</div>
+				<hr>
+
+				<!-- Blog Comments -->
+				
+					<h2 class="margin-bottom-20">Comments</h2>
+					<div id="disqus_thread"></div> 
+						
+<script>
+var disqus_config = function () {
+	this.page.url = "https://borza.dev/hexagonal-architecture-signals/";  // Replace PAGE_URL with your page's canonical URL variable
+	this.page.identifier = "/hexagonal-architecutre-signals"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function() { // DON'T EDIT BELOW THIS LINE
+	var d = document, s = d.createElement('script');
+	s.src = '//vborza.disqus.com/embed.js';
+	s.setAttribute('data-timestamp', +new Date());
+	(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>
+	Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+</noscript>
+					
+				<hr>
+				<!-- End Blog Comments -->
+			</div>
+			<!-- Blog Sidebar -->
+			<div class="col-md-3">
+
+				<div class="headline-v2">
+					<h2>Latest Posts</h2>
+				</div>
+				<!-- Latest Links -->
+				
+	<ul class="list-unstyled blog-latest-posts margin-bottom-50">
+        
+            <li>
+				<h3><a href="/trading-platform-k8s/">Designing a scalable and secure trading platform on top of Kubernetes</a></h3>
+				<small>14 July 2020, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/architecture">Architecture</a>, 
+  
+    <a href="https://borza.dev/tags/signals">Signals Network</a>, 
+  
+    <a href="https://borza.dev/tags/k8s">K8s</a>
+  
+</small>
+				<p>
+
+</p>
+			</li>
+        
+            <li>
+				<h3><a href="/hexagonal-architecture-signals/">Leveraging Hexagonal architecture in Signals Framework’s design</a></h3>
+				<small>24 June 2019, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/architecture">Architecture</a>, 
+  
+    <a href="https://borza.dev/tags/signals">Signals Network</a>
+  
+</small>
+				<p>I created this technical article for Signals company in cooperation...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/breaking-down-signals-platform/">Breaking down the Signals Platform</a></h3>
+				<small>11 April 2019, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/architecture">Architecture</a>, 
+  
+    <a href="https://borza.dev/tags/signals">Signals Network</a>
+  
+</small>
+				<p>I created this technical article for Signals company in cooperation...</p>
+			</li>
+        
+            <li>
+				<h3><a href="/blocking-threads-io-operations/">Don't block your threads with IO bound operations</a></h3>
+				<small>4 February 2017, <i class="fa fa-tags"></i> 
+  
+    <a href="https://borza.dev/tags/csharp">C#</a>, 
+  
+    <a href="https://borza.dev/tags/async">Async</a>
+  
+</small>
+				<p>Many of us use the async/await feature in C# projects,...</p>
+			</li>
+        
+	</ul>
+				<!-- End Latest Links -->
+
+				<div class="headline-v2">
+					<h2>Browse</h2>
+				</div>
+				<a href="https://borza.dev/archive" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-history"></i> Archive</a>
+				<a href="https://borza.dev/blog" class="btn-u btn-brd btn-brd-hover"><i class="fa fa-sort-amount-desc"></i> All posts</a>
+				<div class="clearfix"></div>
+			</div>
+			</div>
+			<!-- End Blog Sidebar -->
+		</div>
+	</div>
+	<!--/end container-->
+</div>
+<!--=== End Blog Posts ===-->
+<!-- Go to www.addthis.com/dashboard to customize your tools --> 
+<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5883812d7a818277"></script> 
+
+		<!--=== Footer Version 1 ===-->
+		<div class="footer-v1 sticky-footer">
+			<div class="copyright">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-6">
+							<p>
+								2020 &copy; All Rights Reserved.
+							</p>
+						</div>
+					</div>
+				</div>
+			</div><!--/copyright-->
+		</div>
+		<!--=== End Footer Version 1 ===-->
+	</div><!--/End Wrapepr-->
+
+	<!-- JS Global Compulsory -->
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<!-- JS Implementing Plugins -->
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/back-to-top.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/smoothScroll.js"></script>
+	<script type="text/javascript" src="https://borza.dev/assets/plugins/jquery.parallax.js"></script>
+	<!-- JS Customization -->
+	<script type="text/javascript" src="https://borza.dev/assets/js/custom.js"></script>
+	<!-- JS Page Level -->
+	<script type="text/javascript" src="https://borza.dev/assets/js/app.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			App.init();
+			App.initParallaxBg();
+		});
+	</script>
+	<!--[if lt IE 9]>
+	<script src="assets/plugins/respond.js"></script>
+	<script src="assets/plugins/html5shiv.js"></script>
+	<script src="assets/plugins/placeholder-IE-fixes.js"></script>
+	<![endif]-->
+
+</body>
+</html>
