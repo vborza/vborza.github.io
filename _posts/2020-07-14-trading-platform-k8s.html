@@ -20,5 +20,75 @@ image: /img/posts/trading_k8s.png
     <li><b>Automated strategy deployment</b><br>
       Execution of a strategy coded in the web editor must be a fully automated process, without any manual steps or configurations.
     </li>
+    <li><b>Parallel execution</b><br>
+      All deployed strategies must be subscribed to the market data events (new trade, new price, etc.) and process them in real-time. 
+      This must happen for all strategies at once, as soon as the event is received from the exchange.
+    </li>
+    <li><b>Scalability</b><br>
+      The component for strategy execution must be horizontally scalable — i.e. if there won’t be enough resources to run more strategies, we can just throw in another server and scale it out.
+    </li>
+    <li><b>Security</b><br>
+      We had to figure out how to execute the strategies while keeping them isolated from the rest of our services or other strategies. In the end, the trading strategy is a piece of untrusted C# code provided by the end-user, which we need to run on our infrastructure. Even if we restricted the set of assemblies available in our online code editor, a strategy implementation could still contain some malicious code. 
+      We just couldn’t take the risk that some misbehaving strategy will affect our trading platform.
+    </li>
+    <li><b>Resources limits</b><br>
+      There should be a way to define limits for resources that a strategy could consume, as we don’t have full control over the strategies’ code. 
+      It could happen that some buggy or poorly programmed strategy could eat all the free RAM or too much CPU and affect other services as well.
+    </li>
   </ul>
+</p>
+
+<div class="headline"><h4>What about the Actor Model?</h4></div>
+<p>
+  I would guess that anybody who has experience with building some trading, online gaming, social media, or complex event stream processing applications, 
+  has heard about the <a href="https://doc.akka.io/docs/akka/current/typed/guide/actors-intro.html" target="_blank">Actor Model</a> and what benefits it brings to distributed computing architecture.
+</p>
+<p>
+  When joining Signals Network, I already had some experience with building a C# application for automated trading on smaller crypto exchanges. In the application, I was using the <a href="https://getakka.net/" target="_blank">Akka.NET</a> framework, 
+  which meets the requirements for automated strategy deployment, parallel execution, and scalability. Originally, I aimed to use the features of Akka.Net for the real-time trading functionality in Signals Network as well, 
+  but it did not provide any way to limit the resources consumed by individual actors or to isolate the strategy execution process to the level we needed.
+</p>
+
+<div class="headline"><h4>Let’s check the Docker containers</h4></div>
+<p>
+  Except for the VMs, which were inefficient for our use-case, the most secure way I could think about, was running each strategy as an isolated .Net Core service in its own Docker container, 
+  which can be secured even more with a module like <a href="https://docs.docker.com/engine/security/apparmor/" target="_blank">AppArmor</a> to prevent strategy code from executing some malicious actions.
+</p>
+<p>
+  Docker is designed to run multiple containers, so there shouldn’t be an issue with the parallel execution of multiple strategies. It also provides ways to set resources limits for each container. 
+  However, to prove this concept, I needed to implement the automated strategy deployment functionality — i.e. find a way to dynamically start the strategy execution container when the user clicks on the “deploy strategy” button in the UI. 
+  Using just the docker, the solution would definitely involve some low-level bash scripts, which are often hard to maintain and debug. It would definitely be better to reuse functionality already embedded in some of the container orchestration platforms.
+</p>
+
+<div class="headline"><h4>Bring Kubernetes to the table</h4></div>
+<p>
+  Luckily, at the time I was cracking this problem, Kubernetes was around for quite a while and we were already using it to host our microservices. I decided to take a better look under its hood, to check how it will meet our needs for the strategy execution component.
+</p>
+<p>
+  Kubernetes clusters are horizontally scalable, and I discovered that it also provides a way to <a href="https://kubernetes.io/docs/tasks/configure-pod-container/assign-cpu-resource/#specify-a-cpu-request-and-a-cpu-limit" target="_blank">set CPU and memory limits</a> for the pods. 
+  Regarding security, besides the fact that each service runs in an isolated Docker container, <a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/" target="_blank">Pod Security Policies</a> 
+  allowed us to define restrictive rules for accessing the filesystem, network, system calls, etc. As the pods with various strategies are running all at once, this setup also meets the parallel execution requirement.
+</p>
+<p>
+  The last piece of the puzzle was the automated strategy deployment. As a programmer, I was already familiar with the Kubernetes command-line tool Kubectl. However, to use it from our .Net Core service subscribed to the commands from the web application, 
+  I would have to start external processes from my C# code, which is always a little bit tricky and a dangerous thing to do. Fortunately, Kubernetes has also fully-featured <a href="https://kubernetes.io/docs/concepts/overview/kubernetes-api/" target="_blank">REST API</a> with a bunch of client libraries written in various languages, 
+  including C# as well. With API endpoints providing functionality to create/update/delete a deployment, start a pod, or get the status of all containers in the cluster, there was nothing blocking me from programming our strategy execution service.
+</p>
+
+<div class="headline"><h4>Final design</h4></div>
+<p>
+  The final architecture of the strategy execution component looks like this:<br> <em>(infrastructure and implementation details omitted for brevity)</em>
+</p>
+<p>
+  <img class="img-responsive center" style="margin:auto;" src="{{site.url}}/img/posts/k8s_signals_design.png" alt="K8S Signals Design">
+</p>
+<p>
+  <b>Strategy Executors Supervisor</b> is a .Net Core service responsible for the management of <b>Strategy Executor Containers</b>. 
+  It uses the <a href="https://github.com/kubernetes-client/csharp" target="_blank">Kubernetes C# Client</a> to dynamically start or stop the executors according 
+  to the requests received from the <b>Web Application</b>. Every executor container runs an instance of <b>Strategy Executor Service</b>, which dynamically loads the specified 
+  strategy from <b>Strategies Registry</b>, subscribes to market events, and runs the strategy until it’s stopped.
+</p>
+<p>
+  Since we released the demo version of the Signals platform, the implementation of the strategy execution component improved significantly but the overall architecture stayed the same, as it still satisfies all our requirements. 
+  We are just using more Kubernetes features like container lifecycle callbacks, persistent volumes, liveness/readiness/startup probes, and other mechanisms to easily recover from failures and keep the strategies always running.
 </p>
